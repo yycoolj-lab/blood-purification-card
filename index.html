@@ -351,8 +351,8 @@ const INDICATORS = [
 ];
 
 const SECTIONS = [
-  { name: '血脂肪', icon: '💧', bg: '#E0F5F3', fg: '#2B8680' },
-  { name: '肝功能', icon: '🌿', bg: '#E3F1E6', fg: '#3F8A6A' },
+  { name: '血脂肪', icon: '💧', bg: '#FFE8D0', fg: '#D2691E' },
+  { name: '肝功能', icon: '🌿', bg: '#FFE8D0', fg: '#D2691E' },
 ];
 
 // ─── Colors (Tiffany blue + 富足品牌綠) ────────────────────────
@@ -570,7 +570,7 @@ function drawCard(canvas, fmt) {
 
   // 3 pill chips
   const chipPills = [
-    { key:'before', label:'治療前',  bg:'#F2E5D5', fg:'#A67332' },
+    { key:'before', label:'治療前',  bg:'#FFE4E4', fg:'#C94040' },
     { key:'after',  label:'治療後',  bg:C.tiffSoft, fg:C.tiffDeep },
     { key:'badge',  label:'改善幅度', bg:'#FFF4D2', fg:C.butterDark },
   ];
@@ -596,7 +596,7 @@ function drawCard(canvas, fmt) {
   const totalRows = INDICATORS.length;
   const totalSections = SECTIONS.length;
   const availForRows = contentEnd - contentStart - totalSections * SH - 20;
-  const ROW_H = Math.max(90, Math.min(fmt === '4:5' ? 140 : 120, Math.floor(availForRows / totalRows)));
+  const ROW_H = Math.max(85, Math.min(fmt === '4:5' ? 115 : 100, Math.floor(availForRows / totalRows)));
 
   let y = contentStart;
   let rowIdx = 0;
@@ -637,27 +637,27 @@ function drawCard(canvas, fmt) {
       ctx.fill();
 
       // Label
-      const lsz = Math.min(34, rh * 0.32);
+      const lsz = Math.min(38, rh * 0.36);
       ctx.font = `700 ${lsz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.text;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'left';
       ctx.fillText(item.label, CX + PAD + 52, cy - 8);
 
-      ctx.font = `400 18px "Noto Sans TC", sans-serif`;
+      ctx.font = `400 20px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.textLight;
       ctx.fillText(item.unit, CX + PAD + 52, cy + lsz * 0.65);
 
-      // Before
-      const bSz = Math.min(42, rh * 0.36);
-      ctx.font = `500 ${bSz}px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = v.before !== null ? '#8A9EA0' : '#D8E4E3';
+      // Before (red — 提醒治療前的警訊值)
+      const bSz = Math.min(54, rh * 0.46);
+      ctx.font = `700 ${bSz}px "Noto Sans TC", sans-serif`;
+      ctx.fillStyle = v.before !== null ? '#E85959' : '#E8C8C8';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(fmtVal(v.before), (COL.before + COL.beforeEnd) / 2, cy);
 
       // After (Tiffany highlight)
-      const aSz = Math.min(54, rh * 0.44);
+      const aSz = Math.min(64, rh * 0.54);
       ctx.font = `800 ${aSz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = v.after !== null ? C.tiffDeep : '#D8E4E3';
       ctx.fillText(fmtVal(v.after), (COL.after + COL.afterEnd) / 2, cy);
@@ -695,17 +695,21 @@ function drawCard(canvas, fmt) {
   if (y < contentEnd) {
     const gapTop = y + 6;
     const gapH   = contentEnd - y - 6;
-    if (gapH > 70) {
+    if (gapH > 36) {
       // Decorative stars
       ctx.font = '28px sans-serif';
       ctx.fillStyle = C.tiff;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
-      const mainSz = gapH > 180 ? (fmt === '4:5' ? 42 : 36)
-                    : gapH > 130 ? 30
-                    : 24;
-      const attrSz = gapH > 180 ? 20 : gapH > 130 ? 16 : 13;
+      const mainSz = gapH > 160 ? (fmt === '4:5' ? 42 : 36)
+                    : gapH > 110 ? 32
+                    : gapH > 70  ? 26
+                    : 20;
+      const attrSz = gapH > 160 ? 20
+                    : gapH > 110 ? 17
+                    : gapH > 70  ? 14
+                    : 12;
 
       const cxm = CX + CW / 2;
       const cym = gapTop + gapH / 2;
