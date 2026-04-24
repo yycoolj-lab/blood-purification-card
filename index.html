@@ -554,10 +554,6 @@ function drawCard(canvas, fmt) {
 
       ctx.fillText('把你的心血管，交給專心的醫師。', cx, cy - mainSz * 0.55);
 
-      // Decorative separator (short red line)
-      ctx.fillStyle = C.red;
-      ctx.fillRect(cx - 28, cy + mainSz * 0.15, 56, 3);
-
       // Attribution line
       const attrSz = fmt === '4:5' ? 22 : 20;
       ctx.font = `500 ${attrSz}px "Noto Sans TC", sans-serif`;
