@@ -184,14 +184,6 @@
       <div class="field-row cols-2">
         <div><label>患者姓名（可略）</label>
         <input type="text" id="patientName" placeholder="王先生"></div>
-        <div><label>次數 / 備註</label>
-        <input type="text" id="sessionCount" placeholder="第 3 次"></div>
-      </div>
-      <div class="field-row cols-2">
-        <div><label>治療前日期</label>
-        <input type="date" id="dateBefore"></div>
-        <div><label>治療後日期</label>
-        <input type="date" id="dateAfter"></div>
       </div>
     </div>
 
@@ -328,9 +320,6 @@ function getData() {
   return {
     treatmentName: document.getElementById('treatmentName').value.trim() || '血液淨化',
     patientName:   document.getElementById('patientName').value.trim(),
-    sessionCount:  document.getElementById('sessionCount').value.trim(),
-    dateBefore:    document.getElementById('dateBefore').value,
-    dateAfter:     document.getElementById('dateAfter').value,
     vals,
   };
 }
@@ -392,20 +381,14 @@ function drawCard(canvas, fmt) {
   ctx.fillStyle = C.white;
   ctx.fillText(d.treatmentName + '  成效報告', 30, HH / 2 + 16);
 
-  // Right: patient + dates
-  ctx.textAlign = 'right';
-  if (d.patientName || d.sessionCount) {
-    ctx.font = '700 17px "Noto Sans TC", sans-serif';
+  // Right: patient name
+  if (d.patientName) {
+    ctx.textAlign = 'right';
+    ctx.font = '700 20px "Noto Sans TC", sans-serif';
     ctx.fillStyle = C.white;
-    ctx.fillText([d.patientName, d.sessionCount].filter(Boolean).join('　'), W - 32, HH / 2 - 12);
+    ctx.fillText(d.patientName, W - 32, HH / 2 + 4);
+    ctx.textAlign = 'left';
   }
-  const dateStr = [d.dateBefore, d.dateAfter].filter(Boolean).map(s => s.replace(/-/g, '/')).join(' → ');
-  if (dateStr) {
-    ctx.font = '400 14px "Noto Sans TC", sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.65)';
-    ctx.fillText(dateStr, W - 32, HH / 2 + 14);
-  }
-  ctx.textAlign = 'left';
 
   // ── Column header bar ──
   const PAD = 32;
@@ -614,10 +597,6 @@ document.querySelectorAll('input').forEach(el =>
   el.addEventListener('input', () => { clearTimeout(t); t = setTimeout(redraw, 100); })
 );
 
-const today = new Date();
-document.getElementById('dateAfter').value  = today.toISOString().slice(0, 10);
-const prev = new Date(today); prev.setDate(prev.getDate() - 7);
-document.getElementById('dateBefore').value = prev.toISOString().slice(0, 10);
 
 document.fonts.ready.then(redraw);
 </script>
