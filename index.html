@@ -534,6 +534,38 @@ function drawCard(canvas, fmt) {
   if (y < contentEnd) {
     ctx.fillStyle = C.white;
     ctx.fillRect(0, y, W, contentEnd - y);
+
+    // ── Tagline block (inside the blank gap) ──
+    const gapTop = y;
+    const gapH   = contentEnd - y;
+    if (gapH > 180) {
+      // Subtle green accent on left
+      ctx.fillStyle = C.green;
+      ctx.fillRect(0, gapTop + gapH * 0.20, 8, gapH * 0.60);
+
+      // Main line — brush-like serif
+      const mainSz = fmt === '4:5' ? 44 : 38;
+      ctx.font = `700 ${mainSz}px "Noto Serif TC", serif`;
+      ctx.fillStyle = C.greenDark;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const cx = W / 2;
+      const cy = gapTop + gapH / 2;
+
+      ctx.fillText('把你的心血管，交給專心的醫師。', cx, cy - mainSz * 0.55);
+
+      // Decorative separator (short red line)
+      ctx.fillStyle = C.red;
+      ctx.fillRect(cx - 28, cy + mainSz * 0.15, 56, 3);
+
+      // Attribution line
+      const attrSz = fmt === '4:5' ? 22 : 20;
+      ctx.font = `500 ${attrSz}px "Noto Sans TC", sans-serif`;
+      ctx.fillStyle = C.green;
+      ctx.fillText('— 俠醫楊智鈞  ｜  富足診所', cx, cy + mainSz * 0.55 + attrSz * 0.5);
+
+      ctx.textAlign = 'left';
+    }
   }
   ctx.fillStyle = C.border;
   ctx.fillRect(0, contentEnd, W, 1);
