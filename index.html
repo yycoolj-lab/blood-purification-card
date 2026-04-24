@@ -400,17 +400,17 @@ function drawCard(canvas, fmt) {
   };
 
   const COLH = HH;
-  const COLH_H = 50;
+  const COLH_H = 72;
   ctx.fillStyle = C.greenLight;
   ctx.fillRect(0, COLH, W, COLH_H);
 
-  ctx.font = '700 15px "Noto Sans TC", sans-serif';
+  ctx.font = '700 26px "Noto Sans TC", sans-serif';
   ctx.fillStyle = C.green;
   ctx.textBaseline = 'middle';
   const chY = COLH + COLH_H / 2;
 
   ctx.textAlign = 'left';
-  ctx.fillText('指標', COL.label + 12, chY);
+  ctx.fillText('指標', COL.label + 18, chY);
   ctx.textAlign = 'center';
   ctx.fillText('治療前', (COL.before + COL.beforeEnd) / 2, chY);
   ctx.fillText('治療後', (COL.after  + COL.afterEnd)  / 2, chY);
@@ -430,13 +430,13 @@ function drawCard(canvas, fmt) {
   const FOOTER_H = 64;
   const contentStart = COLH + COLH_H + 2;
   const contentEnd   = H - FOOTER_H;
-  const SH = 44; // section header height
+  const SH = 64; // section header height
 
   // Calculate row height
   const totalRows = INDICATORS.length;
   const totalSections = SECTIONS.length;
   const availForRows = contentEnd - contentStart - totalSections * SH;
-  const ROW_H = Math.max(56, Math.min(fmt === '4:5' ? 110 : 90, Math.floor(availForRows / totalRows)));
+  const ROW_H = Math.max(90, Math.min(fmt === '4:5' ? 145 : 125, Math.floor(availForRows / totalRows)));
 
   let y = contentStart;
   let rowIdx = 0;
@@ -447,10 +447,10 @@ function drawCard(canvas, fmt) {
     // Section header
     ctx.fillStyle = C.greenDark;
     ctx.fillRect(0, y, W, SH);
-    ctx.font = '700 14px "Noto Sans TC", sans-serif';
+    ctx.font = '700 26px "Noto Sans TC", sans-serif';
     ctx.fillStyle = C.white;
     ctx.textBaseline = 'middle';
-    ctx.fillText('■  ' + sName, COL.label + 12, y + SH / 2);
+    ctx.fillText('■  ' + sName, COL.label + 18, y + SH / 2);
     y += SH;
 
     items.forEach(item => {
@@ -473,19 +473,19 @@ function drawCard(canvas, fmt) {
       });
 
       // Label
-      const lsz = Math.min(21, ROW_H * 0.27);
+      const lsz = Math.min(40, ROW_H * 0.32);
       ctx.font = `600 ${lsz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.text;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'left';
-      ctx.fillText(item.label, COL.label + 12, cy - 4);
+      ctx.fillText(item.label, COL.label + 18, cy - 8);
 
-      ctx.font = `400 12px "Noto Sans TC", sans-serif`;
+      ctx.font = `400 20px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.textLight;
-      ctx.fillText(item.unit, COL.label + 12, cy + lsz * 0.65);
+      ctx.fillText(item.unit, COL.label + 18, cy + lsz * 0.62);
 
       // Before
-      const bSz = Math.min(24, ROW_H * 0.3);
+      const bSz = Math.min(46, ROW_H * 0.36);
       ctx.font = `400 ${bSz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = v.before !== null ? '#4A6A58' : '#C8D8CC';
       ctx.textAlign = 'center';
@@ -493,7 +493,7 @@ function drawCard(canvas, fmt) {
       ctx.fillText(fmtVal(v.before), (COL.before + COL.beforeEnd) / 2, cy);
 
       // After
-      const aSz = Math.min(30, ROW_H * 0.36);
+      const aSz = Math.min(58, ROW_H * 0.44);
       ctx.font = `700 ${aSz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = v.after !== null ? C.green : '#C8D8CC';
       ctx.fillText(fmtVal(v.after), (COL.after + COL.afterEnd) / 2, cy);
@@ -502,22 +502,22 @@ function drawCard(canvas, fmt) {
       const ch = calcPct(v.before, v.after, item.dir);
       const bcx = (COL.badge + COL.badgeEnd) / 2;
       if (ch) {
-        const BW = 118, BH = Math.min(42, ROW_H * 0.52);
+        const BW = 200, BH = Math.min(68, ROW_H * 0.56);
         ctx.fillStyle = ch.improved ? C.goodBg : C.badBg;
-        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 7);
+        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 10);
         ctx.fill();
         ctx.strokeStyle = ch.improved ? C.good : C.bad;
-        ctx.lineWidth = 1.5;
-        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 7);
+        ctx.lineWidth = 2;
+        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 10);
         ctx.stroke();
 
-        ctx.font = `700 ${Math.min(21, BH * 0.52)}px "Noto Sans TC", sans-serif`;
+        ctx.font = `700 ${Math.min(36, BH * 0.56)}px "Noto Sans TC", sans-serif`;
         ctx.fillStyle = ch.improved ? C.good : C.bad;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(`${ch.arrow} ${ch.pct.toFixed(1)}%`, bcx, cy + 1);
+        ctx.fillText(`${ch.arrow} ${ch.pct.toFixed(1)}%`, bcx, cy + 2);
       } else {
-        ctx.font = '400 20px "Noto Sans TC", sans-serif';
+        ctx.font = '400 38px "Noto Sans TC", sans-serif';
         ctx.fillStyle = '#C0C8C4';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -538,13 +538,19 @@ function drawCard(canvas, fmt) {
     // ── Tagline block (inside the blank gap) ──
     const gapTop = y;
     const gapH   = contentEnd - y;
-    if (gapH > 180) {
+    if (gapH > 90) {
       // Subtle green accent on left
       ctx.fillStyle = C.green;
       ctx.fillRect(0, gapTop + gapH * 0.20, 8, gapH * 0.60);
 
-      // Main line — brush-like serif
-      const mainSz = fmt === '4:5' ? 44 : 38;
+      // Scale tagline size based on available gap
+      const mainSz = gapH > 180 ? (fmt === '4:5' ? 44 : 38)
+                    : gapH > 130 ? 32
+                    : 26;
+      const attrSz = gapH > 180 ? (fmt === '4:5' ? 22 : 20)
+                    : gapH > 130 ? 18
+                    : 15;
+
       ctx.font = `700 ${mainSz}px "Noto Serif TC", serif`;
       ctx.fillStyle = C.greenDark;
       ctx.textAlign = 'center';
@@ -555,7 +561,6 @@ function drawCard(canvas, fmt) {
       ctx.fillText('把你的心血管，交給專心的醫師。', cx, cy - mainSz * 0.55);
 
       // Attribution line
-      const attrSz = fmt === '4:5' ? 22 : 20;
       ctx.font = `500 ${attrSz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.green;
       ctx.fillText('— 俠醫楊智鈞  ｜  富足診所', cx, cy + mainSz * 0.55 + attrSz * 0.5);
