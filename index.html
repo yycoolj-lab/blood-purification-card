@@ -4,158 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>血液淨化成效圖卡 — 俠醫楊智鈞</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Noto Sans TC", sans-serif; background: #EEF2EF; color: #1A1A1A; min-height: 100vh; display: flex; flex-direction: column; }
 
-    body {
-      font-family: "Noto Sans TC", sans-serif;
-      background: #EEF2EF;
-      color: #1A1A1A;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .app-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 18px 32px;
-      background: #2D5F4A;
-      flex-shrink: 0;
-    }
-    .brand-bar { width: 4px; height: 28px; background: #C0392B; border-radius: 2px; }
-    .app-header h1 { font-family: "Noto Serif TC", serif; font-size: 20px; color: #fff; font-weight: 700; }
-    .app-header p { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+    .app-header { display: flex; align-items: center; gap: 14px; padding: 16px 28px; background: #2D5F4A; flex-shrink: 0; }
+    .brand-bar { width: 4px; height: 26px; background: #C0392B; border-radius: 2px; }
+    .app-header h1 { font-family: "Noto Serif TC", serif; font-size: 18px; color: #fff; font-weight: 700; }
+    .app-header p { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; }
 
     .app-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
 
-    /* ─── Form ─── */
-    .form-panel {
-      width: 380px;
-      flex-shrink: 0;
-      background: #fff;
-      border-right: 1px solid #D8E4DE;
-      overflow-y: auto;
-      padding: 24px 22px 40px;
-    }
+    .form-panel { width: 370px; flex-shrink: 0; background: #fff; border-right: 1px solid #D8E4DE; overflow-y: auto; padding: 20px 18px 40px; }
+    .form-section { margin-bottom: 22px; }
+    .section-title { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #2D5F4A; font-weight: 700; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid #2D5F4A; }
 
-    .form-section { margin-bottom: 24px; }
-
-    .section-title {
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #2D5F4A;
-      font-weight: 700;
-      margin-bottom: 12px;
-      padding-bottom: 6px;
-      border-bottom: 2px solid #2D5F4A;
-    }
-
-    .field-row { display: grid; gap: 8px; margin-bottom: 8px; }
-    .field-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .field-row { display: grid; gap: 7px; margin-bottom: 7px; }
     .field-row.cols-1 { grid-template-columns: 1fr; }
-
-    label {
-      display: block;
-      font-size: 10px;
-      color: #6B8070;
-      margin-bottom: 3px;
-      font-weight: 500;
-    }
-
-    input[type="text"], input[type="number"], input[type="date"] {
-      width: 100%;
-      background: #F5FAF7;
-      border: 1px solid #C8DDD4;
-      border-radius: 5px;
-      padding: 8px 10px;
-      font-size: 14px;
-      color: #1A1A1A;
-      font-family: "Noto Sans TC", sans-serif;
-      transition: border-color 0.15s;
+    label { display: block; font-size: 10px; color: #6B8070; margin-bottom: 2px; font-weight: 500; }
+    input[type="text"], input[type="number"] {
+      width: 100%; background: #F5FAF7; border: 1px solid #C8DDD4; border-radius: 5px;
+      padding: 8px 10px; font-size: 14px; color: #1A1A1A; font-family: "Noto Sans TC", sans-serif; transition: border-color .15s;
     }
     input:focus { outline: none; border-color: #2D5F4A; }
     input::placeholder { color: #B0C4B8; }
 
-    .ind-block {
-      background: #F5FAF7;
-      border: 1px solid #C8DDD4;
-      border-radius: 7px;
-      padding: 10px 12px 12px;
-      margin-bottom: 8px;
-    }
-
-    .ind-block-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
+    .ind-block { background: #F5FAF7; border: 1px solid #C8DDD4; border-radius: 6px; padding: 9px 11px 11px; margin-bottom: 7px; }
+    .ind-block-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
     .ind-label { font-size: 13px; font-weight: 700; color: #2D5F4A; }
-    .ind-unit-tag {
-      font-size: 10px;
-      color: #7A9A87;
-      background: #DAE9E1;
-      padding: 2px 7px;
-      border-radius: 3px;
-    }
+    .ind-unit-tag { font-size: 10px; color: #7A9A87; background: #DAE9E1; padding: 2px 6px; border-radius: 3px; }
+    .ind-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .ind-inputs label { font-size: 10px; color: #7A9A87; margin-bottom: 2px; display: block; }
 
-    .ind-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
-    /* ─── Preview ─── */
-    .preview-panel {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: #E4EBE5;
-      overflow: auto;
-      padding: 24px 32px 40px;
-    }
-
-    .preview-toolbar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 24px;
-      flex-shrink: 0;
-    }
-
-    .fmt-btn {
-      padding: 8px 18px;
-      background: #fff;
-      border: 1.5px solid #B0C8BA;
-      border-radius: 5px;
-      color: #4A7A5C;
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
+    .preview-panel { flex: 1; display: flex; flex-direction: column; align-items: center; background: #D8E4DA; overflow: auto; padding: 20px 28px 36px; }
+    .preview-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-shrink: 0; }
+    .fmt-btn { padding: 7px 16px; background: #fff; border: 1.5px solid #B0C8BA; border-radius: 5px; color: #4A7A5C; font-family: "Noto Sans TC", sans-serif; font-size: 12px; cursor: pointer; transition: all .15s; }
     .fmt-btn.active { background: #2D5F4A; border-color: #2D5F4A; color: #fff; }
-
-    .dl-btn {
-      padding: 9px 24px;
-      background: #C0392B;
-      border: none;
-      border-radius: 6px;
-      color: #fff;
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+    .dl-btn { padding: 8px 22px; background: #C0392B; border: none; border-radius: 6px; color: #fff; font-family: "Noto Sans TC", sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
     .dl-btn:hover { background: #A93226; }
 
-    #previewCanvas {
-      display: block;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06);
-    }
-
-    .preview-hint { margin-top: 14px; font-size: 11px; color: #8AAA94; text-align: center; }
+    #previewCanvas { display: block; box-shadow: 0 8px 40px rgba(0,0,0,0.22); }
+    .preview-hint { margin-top: 12px; font-size: 11px; color: #7A9A87; text-align: center; }
 
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: #B0C8BA; border-radius: 2px; }
@@ -172,16 +62,11 @@
 </header>
 
 <div class="app-body">
-
   <aside class="form-panel">
 
     <div class="form-section">
-      <div class="section-title">基本資訊</div>
+      <div class="section-title">患者資訊</div>
       <div class="field-row cols-1">
-        <div><label>治療項目名稱</label>
-        <input type="text" id="treatmentName" value="血液淨化" placeholder="例：DFPP 血漿雙重過濾"></div>
-      </div>
-      <div class="field-row cols-2">
         <div><label>患者姓名（可略）</label>
         <input type="text" id="patientName" placeholder="王先生"></div>
       </div>
@@ -189,74 +74,50 @@
 
     <div class="form-section">
       <div class="section-title">血脂肪</div>
-
       <div class="ind-block">
-        <div class="ind-block-head">
-          <span class="ind-label">總膽固醇 TC</span>
-          <span class="ind-unit-tag">mg/dL</span>
-        </div>
+        <div class="ind-block-head"><span class="ind-label">總膽固醇 TC</span><span class="ind-unit-tag">mg/dL</span></div>
         <div class="ind-inputs">
-          <div><label>治療前</label><input type="number" data-key="tc" data-field="before" placeholder="245" step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="tc" data-field="after"  placeholder="185" step="1" min="0"></div>
+          <div><label>淨化前</label><input type="number" data-key="tc" data-field="before" placeholder="328" step="1" min="0"></div>
+          <div><label>淨化後</label><input type="number" data-key="tc" data-field="after"  placeholder="145" step="1" min="0"></div>
         </div>
       </div>
-
       <div class="ind-block">
-        <div class="ind-block-head">
-          <span class="ind-label">低密度脂蛋白 LDL-C</span>
-          <span class="ind-unit-tag">mg/dL</span>
-        </div>
+        <div class="ind-block-head"><span class="ind-label">三酸甘油脂 TG</span><span class="ind-unit-tag">mg/dL</span></div>
         <div class="ind-inputs">
-          <div><label>治療前</label><input type="number" data-key="ldl" data-field="before" placeholder="165" step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="ldl" data-field="after"  placeholder="110" step="1" min="0"></div>
+          <div><label>淨化前</label><input type="number" data-key="tg" data-field="before" placeholder="171" step="1" min="0"></div>
+          <div><label>淨化後</label><input type="number" data-key="tg" data-field="after"  placeholder="35"  step="1" min="0"></div>
         </div>
       </div>
-
       <div class="ind-block">
-        <div class="ind-block-head">
-          <span class="ind-label">三酸甘油脂 TG</span>
-          <span class="ind-unit-tag">mg/dL</span>
-        </div>
+        <div class="ind-block-head"><span class="ind-label">壞膽固醇 LDL-C</span><span class="ind-unit-tag">mg/dL</span></div>
         <div class="ind-inputs">
-          <div><label>治療前</label><input type="number" data-key="tg" data-field="before" placeholder="320" step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="tg" data-field="after"  placeholder="185" step="1" min="0"></div>
+          <div><label>淨化前</label><input type="number" data-key="ldl" data-field="before" placeholder="248" step="1" min="0"></div>
+          <div><label>淨化後</label><input type="number" data-key="ldl" data-field="after"  placeholder="111" step="1" min="0"></div>
         </div>
       </div>
     </div>
 
     <div class="form-section">
       <div class="section-title">肝功能</div>
-
       <div class="ind-block">
-        <div class="ind-block-head">
-          <span class="ind-label">AST（GOT）</span>
-          <span class="ind-unit-tag">U/L</span>
-        </div>
+        <div class="ind-block-head"><span class="ind-label">AST（GOT）</span><span class="ind-unit-tag">U/L</span></div>
         <div class="ind-inputs">
-          <div><label>治療前</label><input type="number" data-key="ast" data-field="before" placeholder="85"  step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="ast" data-field="after"  placeholder="35"  step="1" min="0"></div>
+          <div><label>淨化前</label><input type="number" data-key="ast" data-field="before" placeholder="38" step="1" min="0"></div>
+          <div><label>淨化後</label><input type="number" data-key="ast" data-field="after"  placeholder="28" step="1" min="0"></div>
         </div>
       </div>
-
       <div class="ind-block">
-        <div class="ind-block-head">
-          <span class="ind-label">ALT（GPT）</span>
-          <span class="ind-unit-tag">U/L</span>
-        </div>
+        <div class="ind-block-head"><span class="ind-label">ALT（GPT）</span><span class="ind-unit-tag">U/L</span></div>
         <div class="ind-inputs">
-          <div><label>治療前</label><input type="number" data-key="alt" data-field="before" placeholder="120" step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="alt" data-field="after"  placeholder="42"  step="1" min="0"></div>
+          <div><label>淨化前</label><input type="number" data-key="alt" data-field="before" placeholder="42" step="1" min="0"></div>
+          <div><label>淨化後</label><input type="number" data-key="alt" data-field="after"  placeholder="24" step="1" min="0"></div>
         </div>
       </div>
-
       <div class="ind-block">
-        <div class="ind-block-head">
-          <span class="ind-label">γ-GT</span>
-          <span class="ind-unit-tag">U/L</span>
-        </div>
+        <div class="ind-block-head"><span class="ind-label">γ-GT（r-GT）</span><span class="ind-unit-tag">U/L</span></div>
         <div class="ind-inputs">
-          <div><label>治療前</label><input type="number" data-key="ggt" data-field="before" placeholder="95"  step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="ggt" data-field="after"  placeholder="45"  step="1" min="0"></div>
+          <div><label>淨化前</label><input type="number" data-key="ggt" data-field="before" placeholder="46" step="1" min="0"></div>
+          <div><label>淨化後</label><input type="number" data-key="ggt" data-field="after"  placeholder="23" step="1" min="0"></div>
         </div>
       </div>
     </div>
@@ -265,51 +126,46 @@
 
   <main class="preview-panel">
     <div class="preview-toolbar">
-      <button class="fmt-btn active" id="btn11" onclick="setFormat('1:1')">1:1 方形</button>
-      <button class="fmt-btn"        id="btn45" onclick="setFormat('4:5')">4:5 直式</button>
+      <button class="fmt-btn active" id="btn45" onclick="setFormat('4:5')">4:5 直式（推薦）</button>
+      <button class="fmt-btn"        id="btn11" onclick="setFormat('1:1')">1:1 方形</button>
       <button class="dl-btn" onclick="downloadCard()">下載圖卡 PNG</button>
     </div>
     <canvas id="previewCanvas"></canvas>
     <p class="preview-hint">輸出解析度 1080px — 適用 Instagram / Facebook / LINE 分享</p>
   </main>
-
 </div>
 
 <script>
-// ─── Indicators (fixed, no toggle needed) ─────────────────────
-const INDICATORS = [
-  { key: 'tc',  label: '總膽固醇 TC',   unit: 'mg/dL', dir: 'down', section: '血脂肪' },
-  { key: 'ldl', label: 'LDL-C',        unit: 'mg/dL', dir: 'down', section: '血脂肪' },
-  { key: 'tg',  label: '三酸甘油脂 TG', unit: 'mg/dL', dir: 'down', section: '血脂肪' },
-  { key: 'ast', label: 'AST（GOT）',    unit: 'U/L',   dir: 'down', section: '肝功能' },
-  { key: 'alt', label: 'ALT（GPT）',    unit: 'U/L',   dir: 'down', section: '肝功能' },
-  { key: 'ggt', label: 'γ-GT',         unit: 'U/L',   dir: 'down', section: '肝功能' },
+const LIPID_INDS = [
+  { key: 'tc',  label: '總膽固醇',    label2: 'TC',    unit: 'mg/dL', dir: 'down' },
+  { key: 'tg',  label: '三酸甘油脂',  label2: '(TG)', unit: 'mg/dL', dir: 'down' },
+  { key: 'ldl', label: '壞膽固醇',   label2: '(LDL-C)', unit: 'mg/dL', dir: 'down' },
+];
+const LIVER_INDS = [
+  { key: 'ast', label: 'AST',  label2: '(GOT)', unit: 'U/L', dir: 'down' },
+  { key: 'alt', label: 'ALT',  label2: '(GPT)', unit: 'U/L', dir: 'down' },
+  { key: 'ggt', label: 'γ-GT', label2: '(r-GT)', unit: 'U/L', dir: 'down' },
 ];
 
-const SECTIONS = ['血脂肪', '肝功能'];
+// ─── Status helpers ───────────────────────────────────────────
+function getStatus(key, val) {
+  if (val === null) return '';
+  if (key === 'tc')  return val >= 240 ? '超標' : val >= 200 ? '偏高' : '正常';
+  if (key === 'ldl') return val >= 160 ? '高風險' : val >= 130 ? '偏高' : val < 100 ? '理想' : '接近正常';
+  if (key === 'tg')  return val >= 500 ? '極高' : val >= 200 ? '偏高' : val >= 150 ? '略高' : '正常';
+  return val >= 40 ? '偏高' : '正常'; // ast, alt, ggt
+}
 
-// ─── Colors ──────────────────────────────────────────────────
-const C = {
-  green:     '#2D5F4A',
-  greenDark: '#1E4535',
-  greenLight:'#EBF5EE',
-  white:     '#FFFFFF',
-  text:      '#1A2820',
-  textLight: '#7A9A87',
-  border:    '#D0DDD6',
-  red:       '#C0392B',
-  good:      '#1A6B3A',
-  goodBg:    '#E4F5EB',
-  bad:       '#B52D20',
-  badBg:     '#FDECEA',
-  rowAlt:    '#F7FBF8',
-};
+function statusColor(s, isAfter) {
+  if (['超標','高風險','極高'].includes(s)) return isAfter ? '#B52D20' : '#C0392B';
+  if (['偏高','略高'].includes(s))          return isAfter ? '#C97020' : '#D35400';
+  return isAfter ? '#1A7A3A' : '#1A7A3A';
+}
 
-let currentFormat = '1:1';
-
+// ─── Data ────────────────────────────────────────────────────
 function getData() {
   const vals = {};
-  INDICATORS.forEach(({ key }) => {
+  [...LIPID_INDS, ...LIVER_INDS].forEach(({ key }) => {
     const b = document.querySelector(`input[data-key="${key}"][data-field="before"]`);
     const a = document.querySelector(`input[data-key="${key}"][data-field="after"]`);
     vals[key] = {
@@ -317,11 +173,7 @@ function getData() {
       after:  a && a.value !== '' ? parseFloat(a.value) : null,
     };
   });
-  return {
-    treatmentName: document.getElementById('treatmentName').value.trim() || '血液淨化',
-    patientName:   document.getElementById('patientName').value.trim(),
-    vals,
-  };
+  return { patientName: document.getElementById('patientName').value.trim(), vals };
 }
 
 function fmtVal(v) {
@@ -329,245 +181,375 @@ function fmtVal(v) {
   return v < 10 ? v.toFixed(1) : Math.round(v).toString();
 }
 
-function calcPct(before, after, dir) {
-  if (before === null || after === null || before === 0) return null;
-  const pct = ((after - before) / before) * 100;
-  const improved = dir === 'up' ? pct > 0 : pct < 0;
-  return { pct: Math.abs(pct), improved, arrow: pct < 0 ? '↓' : '↑' };
+function calcPct(b, a) {
+  if (b === null || a === null || b === 0) return null;
+  return ((a - b) / b) * 100;
 }
 
-// ─── Canvas Helpers ───────────────────────────────────────────
+// ─── Canvas helpers ───────────────────────────────────────────
 function rrect(ctx, x, y, w, h, r) {
   ctx.beginPath();
-  ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y);
-  ctx.arcTo(x + w, y, x + w, y + r, r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
-  ctx.lineTo(x + r, y + h);
-  ctx.arcTo(x, y + h, x, y + h - r, r);
-  ctx.lineTo(x, y + r);
-  ctx.arcTo(x, y, x + r, y, r);
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r);
   ctx.closePath();
 }
 
-// ─── Draw Card ───────────────────────────────────────────────
+function drawArrowShape(ctx, cx, cy, w, h, dir, color) {
+  const HH = h * 0.46; // head height
+  const SW = w * 0.42; // shaft width
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  if (dir === 'up') {
+    ctx.moveTo(cx, cy - h/2);
+    ctx.lineTo(cx + w/2, cy - h/2 + HH);
+    ctx.lineTo(cx + SW/2, cy - h/2 + HH);
+    ctx.lineTo(cx + SW/2, cy + h/2);
+    ctx.lineTo(cx - SW/2, cy + h/2);
+    ctx.lineTo(cx - SW/2, cy - h/2 + HH);
+    ctx.lineTo(cx - w/2, cy - h/2 + HH);
+  } else {
+    ctx.moveTo(cx, cy + h/2);
+    ctx.lineTo(cx + w/2, cy + h/2 - HH);
+    ctx.lineTo(cx + SW/2, cy + h/2 - HH);
+    ctx.lineTo(cx + SW/2, cy - h/2);
+    ctx.lineTo(cx - SW/2, cy - h/2);
+    ctx.lineTo(cx - SW/2, cy + h/2 - HH);
+    ctx.lineTo(cx - w/2, cy + h/2 - HH);
+  }
+  ctx.closePath();
+  ctx.fill();
+}
+
+// ─── Value block renderer ─────────────────────────────────────
+function drawValueBlock(ctx, cx, y, bw, bh, s, item, val, isAfter) {
+  const numStr = fmtVal(val);
+  const status = getStatus(item.key, val);
+
+  const lsz  = Math.round(13 * s);
+  const nsz  = Math.round(60 * s);
+  const ssz  = Math.round(13 * s);
+  const arSz = Math.round(18 * s);
+
+  const labelY  = y + bh * 0.15;
+  const label2Y = y + bh * 0.27;
+  const numY    = y + bh * 0.58;
+  const statusY = y + bh * 0.85;
+
+  ctx.textAlign = 'center';
+
+  // Indicator label (line 1)
+  ctx.font = `500 ${lsz}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = isAfter ? '#1A5C2A' : '#5C1A1A';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(item.label, cx, labelY);
+
+  // Indicator label (line 2, smaller)
+  ctx.font = `400 ${Math.round(11 * s)}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = isAfter ? '#3A8A4A' : '#8A3A3A';
+  ctx.fillText(item.label2, cx, label2Y);
+
+  // Big number
+  ctx.font = `900 ${nsz}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = isAfter ? '#1A5232' : '#8B1414';
+  ctx.textBaseline = 'middle';
+
+  if (val !== null) {
+    // Draw number
+    const nw = ctx.measureText(numStr).width;
+    const totalW = nw + (isAfter ? arSz + Math.round(3*s) : 0);
+    const startX = cx - totalW / 2;
+
+    ctx.textAlign = 'left';
+    ctx.fillText(numStr, startX, numY);
+
+    // Down arrow for after values
+    if (isAfter) {
+      ctx.font = `700 ${arSz}px "Noto Sans TC", sans-serif`;
+      ctx.fillStyle = '#1A7A3A';
+      ctx.fillText('↓', startX + nw + Math.round(3*s), numY - nsz * 0.15);
+    }
+    ctx.textAlign = 'center';
+  } else {
+    ctx.fillText('—', cx, numY);
+  }
+
+  // Status tag
+  if (status) {
+    ctx.font = `600 ${ssz}px "Noto Sans TC", sans-serif`;
+    ctx.fillStyle = statusColor(status, isAfter);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`（${status}）`, cx, statusY);
+  }
+}
+
+// ─── Main card renderer ───────────────────────────────────────
 function drawCard(canvas, fmt) {
   const W = 1080;
   const H = fmt === '4:5' ? 1350 : 1080;
+  const s = H / 1350;
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
   const d = getData();
 
-  // White background
-  ctx.fillStyle = C.white;
+  // Background
+  ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, W, H);
 
-  // ── Header ──
-  const HH = 96;
-  ctx.fillStyle = C.green;
-  ctx.fillRect(0, 0, W, HH);
-  ctx.fillStyle = C.red;
-  ctx.fillRect(0, 0, 8, HH);
+  // ── Layout zones ──
+  const TITLE_H   = Math.round(148 * s);
+  const COLHDR_H  = Math.round(64 * s);
+  const LIPID_H   = Math.round(340 * s);
+  const BANNER_H  = Math.round(58 * s);
+  const LIVER_H   = Math.round(226 * s);
+  const ARROW_H   = Math.round(174 * s);
+  const TIPS_H    = H - TITLE_H - COLHDR_H - LIPID_H - BANNER_H - LIVER_H - ARROW_H;
 
-  // Clinic name
-  ctx.font = '500 17px "Noto Sans TC", sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  // ── Column geometry ──
+  const LC = 0,   LW = 460;   // left column
+  const DX = 460, DW = 160;   // center divider
+  const RC = 620, RW = 460;   // right column
+
+  // ── TITLE ZONE ──
+  ctx.fillStyle = '#FAFAFA';
+  ctx.fillRect(0, 0, W, TITLE_H);
+
+  // Red accent line at top
+  ctx.fillStyle = '#C0392B';
+  ctx.fillRect(0, 0, W, Math.round(6 * s));
+
+  const titleSz = Math.round(38 * s);
+  ctx.font = `900 ${titleSz}px "Noto Serif TC", serif`;
+  ctx.fillStyle = '#1A1A1A';
   ctx.textBaseline = 'middle';
-  ctx.textAlign = 'left';
-  ctx.fillText('富足診所', 30, HH / 2 - 16);
-
-  // Treatment title
-  ctx.font = '700 38px "Noto Serif TC", serif';
-  ctx.fillStyle = C.white;
-  ctx.fillText(d.treatmentName + '  成效報告', 30, HH / 2 + 16);
-
-  // Right: patient name
-  if (d.patientName) {
-    ctx.textAlign = 'right';
-    ctx.font = '700 20px "Noto Sans TC", sans-serif';
-    ctx.fillStyle = C.white;
-    ctx.fillText(d.patientName, W - 32, HH / 2 + 4);
-    ctx.textAlign = 'left';
-  }
-
-  // ── Column header bar ──
-  const PAD = 32;
-  const COL = {
-    label:  PAD,        labelEnd: 380,
-    before: 380,        beforeEnd: 580,
-    after:  580,        afterEnd:  780,
-    badge:  780,        badgeEnd:  W - PAD,
-  };
-
-  const COLH = HH;
-  const COLH_H = 50;
-  ctx.fillStyle = C.greenLight;
-  ctx.fillRect(0, COLH, W, COLH_H);
-
-  ctx.font = '700 15px "Noto Sans TC", sans-serif';
-  ctx.fillStyle = C.green;
-  ctx.textBaseline = 'middle';
-  const chY = COLH + COLH_H / 2;
-
-  ctx.textAlign = 'left';
-  ctx.fillText('指標', COL.label + 12, chY);
   ctx.textAlign = 'center';
-  ctx.fillText('治療前', (COL.before + COL.beforeEnd) / 2, chY);
-  ctx.fillText('治療後', (COL.after  + COL.afterEnd)  / 2, chY);
-  ctx.fillText('改善幅度', (COL.badge + COL.badgeEnd) / 2, chY);
-  ctx.textAlign = 'left';
+  ctx.fillText('您的血液大掃除成果', W / 2, TITLE_H * 0.30);
 
-  // Vertical dividers in col header
-  [COL.before, COL.after, COL.badge].forEach(x => {
-    ctx.fillStyle = C.border;
-    ctx.fillRect(x, COLH, 1, COLH_H);
-  });
-  // Bottom line
-  ctx.fillStyle = C.green;
-  ctx.fillRect(0, COLH + COLH_H, W, 2);
+  ctx.font = `700 ${Math.round(34 * s)}px "Noto Serif TC", serif`;
+  ctx.fillStyle = '#C0392B';
+  ctx.fillText('健康指標「有感」升級！', W / 2, TITLE_H * 0.30 + titleSz * 1.28);
 
-  // ── Rows ──
-  const FOOTER_H = 64;
-  const contentStart = COLH + COLH_H + 2;
-  const contentEnd   = H - FOOTER_H;
-  const SH = 44; // section header height
+  const subSz = Math.round(15 * s);
+  ctx.font = `400 ${subSz}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = '#555';
+  ctx.fillText('恭喜！數據顯示您的血液已成功「去油解膩」，回到清澈、輕盈的狀態。', W / 2, TITLE_H - Math.round(22 * s));
 
-  // Calculate row height
-  const totalRows = INDICATORS.length;
-  const totalSections = SECTIONS.length;
-  const availForRows = contentEnd - contentStart - totalSections * SH;
-  const ROW_H = Math.max(56, Math.min(fmt === '4:5' ? 110 : 90, Math.floor(availForRows / totalRows)));
-
-  let y = contentStart;
-  let rowIdx = 0;
-
-  SECTIONS.forEach(sName => {
-    const items = INDICATORS.filter(i => i.section === sName);
-
-    // Section header
-    ctx.fillStyle = C.greenDark;
-    ctx.fillRect(0, y, W, SH);
-    ctx.font = '700 14px "Noto Sans TC", sans-serif';
-    ctx.fillStyle = C.white;
-    ctx.textBaseline = 'middle';
-    ctx.fillText('■  ' + sName, COL.label + 12, y + SH / 2);
-    y += SH;
-
-    items.forEach(item => {
-      const ry = y;
-      const cy = ry + ROW_H / 2;
-      const v  = d.vals[item.key];
-
-      // Row bg
-      ctx.fillStyle = rowIdx % 2 === 0 ? C.white : C.rowAlt;
-      ctx.fillRect(0, ry, W, ROW_H);
-
-      // Bottom border
-      ctx.fillStyle = C.border;
-      ctx.fillRect(0, ry + ROW_H - 1, W, 1);
-
-      // Col dividers
-      [COL.before, COL.after, COL.badge].forEach(x => {
-        ctx.fillStyle = C.border;
-        ctx.fillRect(x, ry, 1, ROW_H);
-      });
-
-      // Label
-      const lsz = Math.min(21, ROW_H * 0.27);
-      ctx.font = `600 ${lsz}px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = C.text;
-      ctx.textBaseline = 'middle';
-      ctx.textAlign = 'left';
-      ctx.fillText(item.label, COL.label + 12, cy - 4);
-
-      ctx.font = `400 12px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = C.textLight;
-      ctx.fillText(item.unit, COL.label + 12, cy + lsz * 0.65);
-
-      // Before
-      const bSz = Math.min(24, ROW_H * 0.3);
-      ctx.font = `400 ${bSz}px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = v.before !== null ? '#4A6A58' : '#C8D8CC';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(fmtVal(v.before), (COL.before + COL.beforeEnd) / 2, cy);
-
-      // After
-      const aSz = Math.min(30, ROW_H * 0.36);
-      ctx.font = `700 ${aSz}px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = v.after !== null ? C.green : '#C8D8CC';
-      ctx.fillText(fmtVal(v.after), (COL.after + COL.afterEnd) / 2, cy);
-
-      // Badge
-      const ch = calcPct(v.before, v.after, item.dir);
-      const bcx = (COL.badge + COL.badgeEnd) / 2;
-      if (ch) {
-        const BW = 118, BH = Math.min(42, ROW_H * 0.52);
-        ctx.fillStyle = ch.improved ? C.goodBg : C.badBg;
-        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 7);
-        ctx.fill();
-        ctx.strokeStyle = ch.improved ? C.good : C.bad;
-        ctx.lineWidth = 1.5;
-        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 7);
-        ctx.stroke();
-
-        ctx.font = `700 ${Math.min(21, BH * 0.52)}px "Noto Sans TC", sans-serif`;
-        ctx.fillStyle = ch.improved ? C.good : C.bad;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`${ch.arrow} ${ch.pct.toFixed(1)}%`, bcx, cy + 1);
-      } else {
-        ctx.font = '400 20px "Noto Sans TC", sans-serif';
-        ctx.fillStyle = '#C0C8C4';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('—', bcx, cy);
-      }
-
-      ctx.textAlign = 'left';
-      y += ROW_H;
-      rowIdx++;
-    });
-  });
-
-  // Fill gap
-  if (y < contentEnd) {
-    ctx.fillStyle = C.white;
-    ctx.fillRect(0, y, W, contentEnd - y);
+  if (d.patientName) {
+    ctx.font = `700 ${Math.round(16 * s)}px "Noto Sans TC", sans-serif`;
+    ctx.fillStyle = '#2D5F4A';
+    ctx.textAlign = 'right';
+    ctx.fillText('患者：' + d.patientName, W - 24, TITLE_H - Math.round(22 * s));
+    ctx.textAlign = 'center';
   }
-  ctx.fillStyle = C.border;
-  ctx.fillRect(0, contentEnd, W, 1);
 
-  // ── Footer ──
-  const fy = H - FOOTER_H;
-  ctx.fillStyle = C.green;
-  ctx.fillRect(0, fy, W, FOOTER_H);
-  ctx.fillStyle = C.red;
-  ctx.fillRect(0, fy, 8, FOOTER_H);
+  // ── COLUMN BG ──
+  const CY = TITLE_H; // comparison zone y
 
-  ctx.font = '400 15px "Noto Sans TC", sans-serif';
+  // Left (pink/salmon)
+  ctx.fillStyle = '#FADBD8';
+  ctx.fillRect(LC, CY, LW, COLHDR_H + LIPID_H + BANNER_H + LIVER_H + ARROW_H);
+
+  // Center divider (tan)
+  ctx.fillStyle = '#F2E6CC';
+  ctx.fillRect(DX, CY, DW, COLHDR_H + LIPID_H + BANNER_H + LIVER_H + ARROW_H);
+
+  // Right (light green)
+  ctx.fillStyle = '#D4F0DA';
+  ctx.fillRect(RC, CY, RW, COLHDR_H + LIPID_H + BANNER_H + LIVER_H + ARROW_H);
+
+  // ── COLUMN HEADERS ──
+  ctx.fillStyle = '#C0392B';
+  ctx.fillRect(LC, CY, LW, COLHDR_H);
+  ctx.fillStyle = '#1E7A3A';
+  ctx.fillRect(RC, CY, RW, COLHDR_H);
+  // Divider header (slightly darker tan)
+  ctx.fillStyle = '#E0C890';
+  ctx.fillRect(DX, CY, DW, COLHDR_H);
+
+  const hSz = Math.round(21 * s);
+  ctx.font = `700 ${hSz}px "Noto Serif TC", serif`;
+  ctx.fillStyle = '#FFFFFF';
   ctx.textBaseline = 'middle';
-  ctx.textAlign = 'left';
-  ctx.fillStyle = 'rgba(255,255,255,0.75)';
-  ctx.fillText('認同的話，幫我分享', 28, fy + FOOTER_H / 2);
-  const sw = ctx.measureText('認同的話，幫我分享').width;
-  ctx.fillStyle = '#FFB3AA';
-  ctx.fillText(' ►►►', 28 + sw, fy + FOOTER_H / 2);
+  ctx.textAlign = 'center';
+  const chY = CY + COLHDR_H / 2;
+  ctx.fillText('● 淨化前：負擔沉重', LC + LW / 2, chY);
+  ctx.fillText('✓ 淨化後：清澈輕盈', RC + RW / 2, chY);
 
+  ctx.font = `700 ${Math.round(14 * s)}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = '#7A5A10';
+  ctx.fillText('血液淨化', DX + DW / 2, chY);
+
+  // ── BLOOD LIPID SECTION ──
+  const LIPID_Y = CY + COLHDR_H;
+  const bw = LW / 3;
+
+  LIPID_INDS.forEach((item, i) => {
+    const lx = LC + i * bw + bw / 2;
+    const rx = RC + i * bw + bw / 2;
+    drawValueBlock(ctx, lx, LIPID_Y, bw, LIPID_H, s, item, d.vals[item.key].before, false);
+    drawValueBlock(ctx, rx, LIPID_Y, bw, LIPID_H, s, item, d.vals[item.key].after, true);
+  });
+
+  // Light column dividers within left panel
+  [bw, bw*2].forEach(ox => {
+    ctx.fillStyle = 'rgba(192,57,43,0.15)';
+    ctx.fillRect(LC + ox, LIPID_Y + Math.round(16*s), 1, LIPID_H - Math.round(32*s));
+    ctx.fillStyle = 'rgba(30,122,58,0.15)';
+    ctx.fillRect(RC + ox, LIPID_Y + Math.round(16*s), 1, LIPID_H - Math.round(32*s));
+  });
+
+  // Center divider arrow + text
+  const arSz = Math.round(56 * s);
+  ctx.font = `700 ${arSz}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = '#8B6A10';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('→', DX + DW / 2, LIPID_Y + LIPID_H * 0.38);
+
+  const divTSz = Math.round(13 * s);
+  ctx.font = `500 ${divTSz}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = '#6B4E10';
+  ctx.fillText('經過血液', DX + DW / 2, LIPID_Y + LIPID_H * 0.62);
+  ctx.fillText('淨化療程', DX + DW / 2, LIPID_Y + LIPID_H * 0.62 + divTSz * 1.5);
+
+  // ── BANNER ZONE ──
+  const BANNER_Y = LIPID_Y + LIPID_H;
+
+  // Left banner: separator label
+  ctx.fillStyle = 'rgba(192,57,43,0.18)';
+  ctx.fillRect(LC, BANNER_Y, LW, BANNER_H);
+  ctx.font = `700 ${Math.round(17 * s)}px "Noto Serif TC", serif`;
+  ctx.fillStyle = '#8B1A1A';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('■  肝功能指標', LC + LW / 2, BANNER_Y + BANNER_H / 2);
+
+  // Right banner: improvement highlight
+  // Calculate best improvement
+  const pctsRaw = LIPID_INDS.map(it => {
+    const p = calcPct(d.vals[it.key].before, d.vals[it.key].after);
+    return p !== null ? Math.abs(p) : null;
+  }).filter(x => x !== null);
+  const bestPct = pctsRaw.length ? Math.max(...pctsRaw) : null;
+
+  ctx.fillStyle = '#F9E04B';
+  ctx.fillRect(RC, BANNER_Y, RW, BANNER_H);
+  ctx.font = `700 ${Math.round(17 * s)}px "Noto Serif TC", serif`;
+  ctx.fillStyle = '#7A4A00';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  if (bestPct !== null) {
+    ctx.fillText(`驚人成果：最高下降 ${bestPct.toFixed(0)}%！`, RC + RW / 2, BANNER_Y + BANNER_H / 2);
+  } else {
+    ctx.fillText('■  肝功能指標', RC + RW / 2, BANNER_Y + BANNER_H / 2);
+  }
+
+  // Divider banner
+  ctx.fillStyle = 'rgba(139,106,16,0.2)';
+  ctx.fillRect(DX, BANNER_Y, DW, BANNER_H);
+
+  // ── LIVER SECTION ──
+  const LIVER_Y = BANNER_Y + BANNER_H;
+  const lbw = LW / 3;
+
+  LIVER_INDS.forEach((item, i) => {
+    const lx = LC + i * lbw + lbw / 2;
+    const rx = RC + i * lbw + lbw / 2;
+    drawValueBlock(ctx, lx, LIVER_Y, lbw, LIVER_H, s, item, d.vals[item.key].before, false);
+    drawValueBlock(ctx, rx, LIVER_Y, lbw, LIVER_H, s, item, d.vals[item.key].after, true);
+  });
+
+  [lbw, lbw*2].forEach(ox => {
+    ctx.fillStyle = 'rgba(192,57,43,0.15)';
+    ctx.fillRect(LC + ox, LIVER_Y + Math.round(14*s), 1, LIVER_H - Math.round(28*s));
+    ctx.fillStyle = 'rgba(30,122,58,0.15)';
+    ctx.fillRect(RC + ox, LIVER_Y + Math.round(14*s), 1, LIVER_H - Math.round(28*s));
+  });
+
+  // Center divider liver text
+  ctx.font = `500 ${Math.round(12 * s)}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = '#7A5A10';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('肝臟功能', DX + DW / 2, LIVER_Y + LIVER_H / 2);
+
+  // ── DECORATIVE ARROWS ──
+  const ARR_Y = LIVER_Y + LIVER_H;
+  const ARR_AW = LW * 0.56;
+  const ARR_AH = ARROW_H * 0.74;
+
+  // Left bg tint
+  ctx.fillStyle = 'rgba(192,57,43,0.12)';
+  ctx.fillRect(LC, ARR_Y, LW, ARROW_H);
+  // Right bg tint
+  ctx.fillStyle = 'rgba(30,122,58,0.12)';
+  ctx.fillRect(RC, ARR_Y, RW, ARROW_H);
+
+  drawArrowShape(ctx, LC + LW/2, ARR_Y + ARROW_H/2, ARR_AW, ARR_AH, 'up',   '#E74C3C');
+  drawArrowShape(ctx, RC + RW/2, ARR_Y + ARROW_H/2, ARR_AW, ARR_AH, 'down', '#27AE60');
+
+  // Arrow labels
+  ctx.font = `700 ${Math.round(16 * s)}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = '#C0392B';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('血液指標偏高', LC + LW/2, ARR_Y + ARROW_H * 0.88);
+  ctx.fillStyle = '#1A7A3A';
+  ctx.fillText('血液指標改善', RC + RW/2, ARR_Y + ARROW_H * 0.88);
+
+  // ── TIPS ZONE ──
+  const TIPS_Y = ARR_Y + ARROW_H;
+  ctx.fillStyle = '#EBF3F5';
+  ctx.fillRect(0, TIPS_Y, W, TIPS_H);
+
+  // Green top border of tips
+  ctx.fillStyle = '#2D5F4A';
+  ctx.fillRect(0, TIPS_Y, W, Math.round(4 * s));
+
+  const tipHSz = Math.round(20 * s);
+  const tipSz  = Math.round(16 * s);
+  const tipPad = Math.round(32 * s);
+  const tipX   = Math.round(200 * s);
+
+  ctx.font = `700 ${tipHSz}px "Noto Serif TC", serif`;
+  ctx.fillStyle = '#1E4535';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('醫師小叮嚀：', tipX, TIPS_Y + tipPad);
+
+  const tips = [
+    '飲食控制：減少精緻澱粉與高油脂食物攝取。',
+    '規律運動：促進新陳代謝，維持血管彈性。',
+    '定期追蹤：遵從醫囑回診，確保身體健康狀態。',
+  ];
+
+  ctx.font = `400 ${tipSz}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = '#2A3A2A';
+  const tipLineH = tipSz * 1.9;
+  tips.forEach((tip, i) => {
+    ctx.fillText('■  ' + tip, tipX, TIPS_Y + tipPad + tipHSz + Math.round(10 * s) + i * tipLineH);
+  });
+
+  // Branding
+  ctx.font = `500 ${Math.round(15 * s)}px "Noto Sans TC", sans-serif`;
+  ctx.fillStyle = '#2D5F4A';
   ctx.textAlign = 'right';
-  ctx.fillStyle = C.white;
-  ctx.fillText('@俠醫楊智鈞', W - 28, fy + FOOTER_H / 2);
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('富足診所照顧心血管', W - Math.round(28 * s), TIPS_Y + TIPS_H - Math.round(16 * s));
   ctx.textAlign = 'left';
 }
 
-// ─── Preview & Download ───────────────────────────────────────
+// ─── Preview ─────────────────────────────────────────────────
 const canvas = document.getElementById('previewCanvas');
-const SCALE = 0.44;
+let currentFormat = '4:5';
+const SCALE = 0.43;
 
 function setFormat(f) {
   currentFormat = f;
-  document.getElementById('btn11').classList.toggle('active', f === '1:1');
   document.getElementById('btn45').classList.toggle('active', f === '4:5');
+  document.getElementById('btn11').classList.toggle('active', f === '1:1');
   redraw();
 }
 
@@ -596,7 +578,6 @@ let t;
 document.querySelectorAll('input').forEach(el =>
   el.addEventListener('input', () => { clearTimeout(t); t = setTimeout(redraw, 100); })
 );
-
 
 document.fonts.ready.then(redraw);
 </script>
