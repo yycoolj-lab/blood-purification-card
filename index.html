@@ -243,7 +243,7 @@
       <div class="section-title">基本資訊</div>
       <div class="field-row cols-1">
         <div><label>治療項目名稱</label>
-        <input type="text" id="treatmentName" value="血液淨化" placeholder="例：DFPP 血漿雙重過濾"></div>
+        <input type="text" id="treatmentName" value="血液淨化體內大掃除" placeholder="例：DFPP 血漿雙重過濾"></div>
       </div>
       <div class="field-row cols-2">
         <div><label>患者姓名（可略）</label>
@@ -418,7 +418,7 @@ function getData() {
     };
   });
   return {
-    treatmentName: document.getElementById('treatmentName').value.trim() || '血液淨化',
+    treatmentName: document.getElementById('treatmentName').value.trim() || '血液淨化體內大掃除',
     patientName:   document.getElementById('patientName').value.trim(),
     vals,
   };
@@ -531,7 +531,7 @@ function drawCard(canvas, fmt) {
   // Title
   ctx.font = '900 52px "Noto Serif TC", serif';
   ctx.fillStyle = '#FFFFFF';
-  ctx.fillText(d.treatmentName + '成效紀錄', titleX, CY + HH * 0.68);
+  ctx.fillText(d.treatmentName + '成效記錄', titleX, CY + HH * 0.68);
 
   // Patient name chip (top-right)
   if (d.patientName) {
