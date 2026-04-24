@@ -342,32 +342,68 @@
 <script>
 // ─── Indicators (fixed, no toggle needed) ─────────────────────
 const INDICATORS = [
-  { key: 'tc',  label: '總膽固醇 TC',   unit: 'mg/dL', dir: 'down', section: '血脂肪' },
-  { key: 'ldl', label: 'LDL-C',        unit: 'mg/dL', dir: 'down', section: '血脂肪' },
-  { key: 'tg',  label: '三酸甘油脂 TG', unit: 'mg/dL', dir: 'down', section: '血脂肪' },
-  { key: 'ast', label: 'AST（GOT）',    unit: 'U/L',   dir: 'down', section: '肝功能' },
-  { key: 'alt', label: 'ALT（GPT）',    unit: 'U/L',   dir: 'down', section: '肝功能' },
-  { key: 'ggt', label: 'γ-GT',         unit: 'U/L',   dir: 'down', section: '肝功能' },
+  { key: 'tc',  label: '總膽固醇 TC',   unit: 'mg/dL', dir: 'down', section: '血脂肪', dot: '#7FD5CE' },
+  { key: 'ldl', label: 'LDL-C',        unit: 'mg/dL', dir: 'down', section: '血脂肪', dot: '#A5E0DA' },
+  { key: 'tg',  label: '三酸甘油脂 TG', unit: 'mg/dL', dir: 'down', section: '血脂肪', dot: '#B7DFEA' },
+  { key: 'ast', label: 'AST（GOT）',    unit: 'U/L',   dir: 'down', section: '肝功能', dot: '#A8D8C0' },
+  { key: 'alt', label: 'ALT（GPT）',    unit: 'U/L',   dir: 'down', section: '肝功能', dot: '#C9E4C5' },
+  { key: 'ggt', label: 'γ-GT',         unit: 'U/L',   dir: 'down', section: '肝功能', dot: '#D8EBD0' },
 ];
 
-const SECTIONS = ['血脂肪', '肝功能'];
+const SECTIONS = [
+  { name: '血脂肪', icon: '💧', bg: '#E0F5F3', fg: '#2B8680' },
+  { name: '肝功能', icon: '🌿', bg: '#E3F1E6', fg: '#3F8A6A' },
+];
 
-// ─── Colors ──────────────────────────────────────────────────
+// ─── Colors (Tiffany blue + 富足品牌綠) ────────────────────────
 const C = {
-  green:     '#2D5F4A',
-  greenDark: '#1E4535',
-  greenLight:'#EBF5EE',
-  white:     '#FFFFFF',
-  text:      '#1A2820',
-  textLight: '#7A9A87',
-  border:    '#D0DDD6',
-  red:       '#C0392B',
-  good:      '#1A6B3A',
-  goodBg:    '#E4F5EB',
-  bad:       '#B52D20',
-  badBg:     '#FDECEA',
-  rowAlt:    '#F7FBF8',
+  bg:          '#F5FBFA',   // very soft tiffany cream
+  white:       '#FFFFFF',
+  cardShadow:  'rgba(10, 160, 150, 0.15)',
+
+  tiff:        '#81D8D0',
+  tiffDark:    '#0ABAB5',
+  tiffDeep:    '#0A8B88',
+  tiffSoft:    '#E0F5F3',
+  tiffTint:    '#F0FAF9',
+
+  brandGreen:  '#2D5F4A',   // 富足品牌深綠
+  brandGold:   '#D4A863',   // 富足品牌金
+
+  mint:        '#85D4B2',
+  mintDark:    '#3F9573',
+  mintSoft:    '#DFF3E8',
+
+  butter:      '#FFE89E',
+  butterSoft:  '#FFF4D2',
+  butterDark:  '#B08820',
+
+  text:        '#3A5558',
+  textLight:   '#8CA4A8',
+  border:      '#D8ECE9',
+  borderSoft:  '#EAF5F3',
+
+  good:        '#0A8B88',
+  goodBg:      '#E0F5F3',
+  bad:         '#E08090',
+  badBg:       '#FFE4EA',
+
+  // legacy aliases
+  green:       '#0A8B88',
+  greenDark:   '#076A68',
+  greenLight:  '#E0F5F3',
+  red:         '#D56A87',
+  rowAlt:      '#F5FBFA',
 };
+
+// ─── Logo image preload ───────────────────────────────────────
+const logoImg = new Image();
+let logoReady = false;
+const logoPromise = new Promise(res => {
+  logoImg.onload  = () => { logoReady = true; res(); };
+  logoImg.onerror = () => { res(); };
+  logoImg.src = 'logo.png';
+});
 
 let currentFormat = '1:1';
 
@@ -422,167 +458,228 @@ function drawCard(canvas, fmt) {
   const ctx = canvas.getContext('2d');
   const d = getData();
 
-  // White background
-  ctx.fillStyle = C.white;
+  // Outer cream bg
+  ctx.fillStyle = C.bg;
   ctx.fillRect(0, 0, W, H);
 
-  // ── Header ──
-  const HH = 96;
-  ctx.fillStyle = C.green;
-  ctx.fillRect(0, 0, W, HH);
-  ctx.fillStyle = C.red;
-  ctx.fillRect(0, 0, 8, HH);
+  // Subtle polka dot decoration
+  ctx.fillStyle = 'rgba(10, 186, 181, 0.08)';
+  for (let py = 30; py < H; py += 80) {
+    for (let px = (py % 160 === 0 ? 30 : 70); px < W; px += 80) {
+      ctx.beginPath();
+      ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
 
-  // Clinic name
-  ctx.font = '500 17px "Noto Sans TC", sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  // Main rounded card
+  const M = 28;                      // outer margin
+  const CR = 40;                     // card radius
+  const CX = M, CY = M, CW = W - M*2, CH = H - M*2;
+
+  // Drop shadow
+  ctx.fillStyle = C.cardShadow;
+  rrect(ctx, CX + 3, CY + 8, CW, CH, CR);
+  ctx.fill();
+
+  // Card surface
+  ctx.fillStyle = C.white;
+  rrect(ctx, CX, CY, CW, CH, CR);
+  ctx.fill();
+
+  // Clip to card for all inner content
+  ctx.save();
+  rrect(ctx, CX, CY, CW, CH, CR);
+  ctx.clip();
+
+  // ── Header block (Tiffany gradient) ──
+  const HH = 170;
+  const headerGrad = ctx.createLinearGradient(CX, CY, CX + CW, CY + HH);
+  headerGrad.addColorStop(0, '#A8E4DF');
+  headerGrad.addColorStop(1, '#81D8D0');
+  ctx.fillStyle = headerGrad;
+  ctx.fillRect(CX, CY, CW, HH);
+
+  // Decorative circles in header
+  ctx.fillStyle = 'rgba(255,255,255,0.30)';
+  ctx.beginPath(); ctx.arc(CX + CW - 80, CY + 40, 22, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(CX + CW - 40, CY + 90, 12, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(CX + CW - 110, CY + 100, 8, 0, Math.PI*2); ctx.fill();
+
+  // Logo on left
+  const LOGO_SZ = 96;
+  const LOGO_X = CX + 40;
+  const LOGO_Y = CY + (HH - LOGO_SZ) / 2;
+  if (logoReady) {
+    // White rounded backdrop for logo
+    ctx.fillStyle = '#FFFFFF';
+    rrect(ctx, LOGO_X - 8, LOGO_Y - 8, LOGO_SZ + 16, LOGO_SZ + 16, 20);
+    ctx.fill();
+    ctx.drawImage(logoImg, LOGO_X, LOGO_Y, LOGO_SZ, LOGO_SZ);
+  }
+
+  // Title area (right of logo)
+  const titleX = LOGO_X + LOGO_SZ + 28;
+
+  // Clinic name small
+  ctx.font = '600 20px "Noto Sans TC", sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
-  ctx.fillText('富足診所', 30, HH / 2 - 16);
+  ctx.fillText('♡ 富足診所 · 照顧心血管', titleX, CY + HH * 0.32);
 
-  // Treatment title
-  ctx.font = '700 38px "Noto Serif TC", serif';
-  ctx.fillStyle = C.white;
-  ctx.fillText(d.treatmentName + '  成效報告', 30, HH / 2 + 16);
+  // Title
+  ctx.font = '900 52px "Noto Serif TC", serif';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText(d.treatmentName + '成效紀錄', titleX, CY + HH * 0.68);
 
-  // Right: patient name
+  // Patient name chip (top-right)
   if (d.patientName) {
-    ctx.textAlign = 'right';
-    ctx.font = '700 20px "Noto Sans TC", sans-serif';
-    ctx.fillStyle = C.white;
-    ctx.fillText(d.patientName, W - 32, HH / 2 + 4);
+    const pName = d.patientName;
+    ctx.font = '600 20px "Noto Sans TC", sans-serif';
+    const pw = ctx.measureText(pName).width + 40;
+    const px = CX + CW - pw - 36;
+    const py = CY + 24;
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    rrect(ctx, px, py, pw, 36, 18);
+    ctx.fill();
+    ctx.fillStyle = C.tiffDeep;
+    ctx.textAlign = 'center';
+    ctx.fillText('👤 ' + pName, px + pw / 2, py + 18);
     ctx.textAlign = 'left';
   }
 
-  // ── Column header bar ──
-  const PAD = 32;
+  // ── Column-header pills ──
+  const PAD = 40;
   const COL = {
-    label:  PAD,        labelEnd: 380,
-    before: 380,        beforeEnd: 580,
-    after:  580,        afterEnd:  780,
-    badge:  780,        badgeEnd:  W - PAD,
+    label:  CX + PAD,      labelEnd: CX + 440,
+    before: CX + 440,      beforeEnd: CX + 620,
+    after:  CX + 620,      afterEnd:  CX + 800,
+    badge:  CX + 800,      badgeEnd:  CX + CW - PAD + 10,
   };
 
-  const COLH = HH;
-  const COLH_H = 72;
-  ctx.fillStyle = C.greenLight;
-  ctx.fillRect(0, COLH, W, COLH_H);
+  const COLH = CY + HH + 30;
+  const COLH_H = 60;
 
-  ctx.font = '700 26px "Noto Sans TC", sans-serif';
-  ctx.fillStyle = C.green;
+  // "指標" label left
+  ctx.font = '700 22px "Noto Sans TC", sans-serif';
+  ctx.fillStyle = C.textLight;
   ctx.textBaseline = 'middle';
-  const chY = COLH + COLH_H / 2;
-
   ctx.textAlign = 'left';
-  ctx.fillText('指標', COL.label + 18, chY);
-  ctx.textAlign = 'center';
-  ctx.fillText('治療前', (COL.before + COL.beforeEnd) / 2, chY);
-  ctx.fillText('治療後', (COL.after  + COL.afterEnd)  / 2, chY);
-  ctx.fillText('改善幅度', (COL.badge + COL.badgeEnd) / 2, chY);
-  ctx.textAlign = 'left';
+  ctx.fillText('✎  指標', COL.label + 8, COLH + COLH_H / 2);
 
-  // Vertical dividers in col header
-  [COL.before, COL.after, COL.badge].forEach(x => {
-    ctx.fillStyle = C.border;
-    ctx.fillRect(x, COLH, 1, COLH_H);
+  // 3 pill chips
+  const chipPills = [
+    { key:'before', label:'治療前',  bg:'#F2E5D5', fg:'#A67332' },
+    { key:'after',  label:'治療後',  bg:C.tiffSoft, fg:C.tiffDeep },
+    { key:'badge',  label:'改善幅度', bg:'#FFF4D2', fg:C.butterDark },
+  ];
+  const CHIP_W = 160, CHIP_H = 48;
+  chipPills.forEach(c => {
+    const cxm = (COL[c.key] + COL[c.key + 'End']) / 2;
+    ctx.fillStyle = c.bg;
+    rrect(ctx, cxm - CHIP_W/2, COLH + (COLH_H - CHIP_H)/2, CHIP_W, CHIP_H, CHIP_H/2);
+    ctx.fill();
+    ctx.font = '700 22px "Noto Sans TC", sans-serif';
+    ctx.fillStyle = c.fg;
+    ctx.textAlign = 'center';
+    ctx.fillText(c.label, cxm, COLH + COLH_H / 2);
   });
-  // Bottom line
-  ctx.fillStyle = C.green;
-  ctx.fillRect(0, COLH + COLH_H, W, 2);
+  ctx.textAlign = 'left';
 
   // ── Rows ──
-  const FOOTER_H = 64;
-  const contentStart = COLH + COLH_H + 2;
-  const contentEnd   = H - FOOTER_H;
-  const SH = 64; // section header height
+  const FOOTER_H = 76;
+  const contentStart = COLH + COLH_H + 14;
+  const contentEnd   = CY + CH - FOOTER_H;
+  const SH = 56;
 
-  // Calculate row height
   const totalRows = INDICATORS.length;
   const totalSections = SECTIONS.length;
-  const availForRows = contentEnd - contentStart - totalSections * SH;
-  const ROW_H = Math.max(90, Math.min(fmt === '4:5' ? 145 : 125, Math.floor(availForRows / totalRows)));
+  const availForRows = contentEnd - contentStart - totalSections * SH - 20;
+  const ROW_H = Math.max(90, Math.min(fmt === '4:5' ? 140 : 120, Math.floor(availForRows / totalRows)));
 
   let y = contentStart;
   let rowIdx = 0;
 
-  SECTIONS.forEach(sName => {
-    const items = INDICATORS.filter(i => i.section === sName);
+  SECTIONS.forEach(sec => {
+    const items = INDICATORS.filter(i => i.section === sec.name);
 
-    // Section header
-    ctx.fillStyle = C.greenDark;
-    ctx.fillRect(0, y, W, SH);
-    ctx.font = '700 26px "Noto Sans TC", sans-serif';
-    ctx.fillStyle = C.white;
+    // Section header as rounded pill
+    const pillX = CX + PAD;
+    const pillW = CW - PAD * 2;
+    ctx.fillStyle = sec.bg;
+    rrect(ctx, pillX, y + 4, pillW, SH - 8, (SH - 8)/2);
+    ctx.fill();
+
+    ctx.font = '800 26px "Noto Sans TC", sans-serif';
+    ctx.fillStyle = sec.fg;
     ctx.textBaseline = 'middle';
-    ctx.fillText('■  ' + sName, COL.label + 18, y + SH / 2);
+    ctx.textAlign = 'left';
+    ctx.fillText(sec.icon + '  ' + sec.name, pillX + 24, y + SH / 2);
     y += SH;
 
     items.forEach(item => {
-      const ry = y;
-      const cy = ry + ROW_H / 2;
+      const ry = y + 4;
+      const rh = ROW_H - 8;
+      const cy = ry + rh / 2;
       const v  = d.vals[item.key];
 
-      // Row bg
-      ctx.fillStyle = rowIdx % 2 === 0 ? C.white : C.rowAlt;
-      ctx.fillRect(0, ry, W, ROW_H);
+      // Soft row card bg (alternating)
+      const bg = rowIdx % 2 === 0 ? C.tiffTint : C.white;
+      ctx.fillStyle = bg;
+      rrect(ctx, CX + PAD, ry, CW - PAD*2, rh, 18);
+      ctx.fill();
 
-      // Bottom border
-      ctx.fillStyle = C.border;
-      ctx.fillRect(0, ry + ROW_H - 1, W, 1);
-
-      // Col dividers
-      [COL.before, COL.after, COL.badge].forEach(x => {
-        ctx.fillStyle = C.border;
-        ctx.fillRect(x, ry, 1, ROW_H);
-      });
+      // Colored left dot for indicator
+      ctx.fillStyle = item.dot;
+      ctx.beginPath();
+      ctx.arc(CX + PAD + 26, cy, 10, 0, Math.PI * 2);
+      ctx.fill();
 
       // Label
-      const lsz = Math.min(40, ROW_H * 0.32);
-      ctx.font = `600 ${lsz}px "Noto Sans TC", sans-serif`;
+      const lsz = Math.min(34, rh * 0.32);
+      ctx.font = `700 ${lsz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.text;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'left';
-      ctx.fillText(item.label, COL.label + 18, cy - 8);
+      ctx.fillText(item.label, CX + PAD + 52, cy - 8);
 
-      ctx.font = `400 20px "Noto Sans TC", sans-serif`;
+      ctx.font = `400 18px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.textLight;
-      ctx.fillText(item.unit, COL.label + 18, cy + lsz * 0.62);
+      ctx.fillText(item.unit, CX + PAD + 52, cy + lsz * 0.65);
 
       // Before
-      const bSz = Math.min(46, ROW_H * 0.36);
-      ctx.font = `400 ${bSz}px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = v.before !== null ? '#4A6A58' : '#C8D8CC';
+      const bSz = Math.min(42, rh * 0.36);
+      ctx.font = `500 ${bSz}px "Noto Sans TC", sans-serif`;
+      ctx.fillStyle = v.before !== null ? '#8A9EA0' : '#D8E4E3';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(fmtVal(v.before), (COL.before + COL.beforeEnd) / 2, cy);
 
-      // After
-      const aSz = Math.min(58, ROW_H * 0.44);
-      ctx.font = `700 ${aSz}px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = v.after !== null ? C.green : '#C8D8CC';
+      // After (Tiffany highlight)
+      const aSz = Math.min(54, rh * 0.44);
+      ctx.font = `800 ${aSz}px "Noto Sans TC", sans-serif`;
+      ctx.fillStyle = v.after !== null ? C.tiffDeep : '#D8E4E3';
       ctx.fillText(fmtVal(v.after), (COL.after + COL.afterEnd) / 2, cy);
 
-      // Badge
+      // Badge pill
       const ch = calcPct(v.before, v.after, item.dir);
       const bcx = (COL.badge + COL.badgeEnd) / 2;
       if (ch) {
-        const BW = 200, BH = Math.min(68, ROW_H * 0.56);
-        ctx.fillStyle = ch.improved ? C.goodBg : C.badBg;
-        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 10);
+        const BW = 200, BH = Math.min(64, rh * 0.56);
+        ctx.fillStyle = ch.improved ? C.tiffSoft : C.badBg;
+        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, BH / 2);
         ctx.fill();
-        ctx.strokeStyle = ch.improved ? C.good : C.bad;
-        ctx.lineWidth = 2;
-        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 10);
-        ctx.stroke();
 
-        ctx.font = `700 ${Math.min(36, BH * 0.56)}px "Noto Sans TC", sans-serif`;
-        ctx.fillStyle = ch.improved ? C.good : C.bad;
+        ctx.font = `800 ${Math.min(32, BH * 0.52)}px "Noto Sans TC", sans-serif`;
+        ctx.fillStyle = ch.improved ? C.tiffDeep : '#B04A5A';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(`${ch.arrow} ${ch.pct.toFixed(1)}%`, bcx, cy + 2);
+        const arrow = ch.improved ? '↓' : '↑';
+        ctx.fillText(`${arrow} ${ch.pct.toFixed(1)}%`, bcx, cy + 1);
       } else {
-        ctx.font = '400 38px "Noto Sans TC", sans-serif';
-        ctx.fillStyle = '#C0C8C4';
+        ctx.font = '400 34px "Noto Sans TC", sans-serif';
+        ctx.fillStyle = '#CBDBD8';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('—', bcx, cy);
@@ -594,67 +691,71 @@ function drawCard(canvas, fmt) {
     });
   });
 
-  // Fill gap
+  // ── Tagline block in remaining gap ──
   if (y < contentEnd) {
-    ctx.fillStyle = C.white;
-    ctx.fillRect(0, y, W, contentEnd - y);
-
-    // ── Tagline block (inside the blank gap) ──
-    const gapTop = y;
-    const gapH   = contentEnd - y;
-    if (gapH > 90) {
-      // Subtle green accent on left
-      ctx.fillStyle = C.green;
-      ctx.fillRect(0, gapTop + gapH * 0.20, 8, gapH * 0.60);
-
-      // Scale tagline size based on available gap
-      const mainSz = gapH > 180 ? (fmt === '4:5' ? 44 : 38)
-                    : gapH > 130 ? 32
-                    : 26;
-      const attrSz = gapH > 180 ? (fmt === '4:5' ? 22 : 20)
-                    : gapH > 130 ? 18
-                    : 15;
-
-      ctx.font = `700 ${mainSz}px "Noto Serif TC", serif`;
-      ctx.fillStyle = C.greenDark;
+    const gapTop = y + 6;
+    const gapH   = contentEnd - y - 6;
+    if (gapH > 70) {
+      // Decorative stars
+      ctx.font = '28px sans-serif';
+      ctx.fillStyle = C.tiff;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      const cx = W / 2;
-      const cy = gapTop + gapH / 2;
 
-      ctx.fillText('把你的心血管，交給專心的醫師。', cx, cy - mainSz * 0.55);
+      const mainSz = gapH > 180 ? (fmt === '4:5' ? 42 : 36)
+                    : gapH > 130 ? 30
+                    : 24;
+      const attrSz = gapH > 180 ? 20 : gapH > 130 ? 16 : 13;
 
-      // Attribution line
+      const cxm = CX + CW / 2;
+      const cym = gapTop + gapH / 2;
+
+      // Little sparkles around
+      ctx.fillStyle = C.tiff;
+      ctx.font = `500 ${mainSz * 0.55}px sans-serif`;
+      ctx.fillText('✦', cxm - 250, cym - mainSz * 0.3);
+      ctx.fillText('✦', cxm + 250, cym - mainSz * 0.3);
+
+      ctx.font = `700 ${mainSz}px "Noto Serif TC", serif`;
+      ctx.fillStyle = C.tiffDeep;
+      ctx.fillText('把你的心血管，交給專心的醫師。', cxm, cym - mainSz * 0.55);
+
       ctx.font = `500 ${attrSz}px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = C.green;
-      ctx.fillText('— 俠醫楊智鈞  ｜  富足診所', cx, cy + mainSz * 0.55 + attrSz * 0.5);
+      ctx.fillStyle = C.tiffDark;
+      ctx.fillText('— 俠醫楊智鈞  ｜  富足診所', cxm, cym + mainSz * 0.55 + attrSz * 0.6);
 
       ctx.textAlign = 'left';
     }
   }
-  ctx.fillStyle = C.border;
-  ctx.fillRect(0, contentEnd, W, 1);
 
-  // ── Footer ──
-  const fy = H - FOOTER_H;
-  ctx.fillStyle = C.green;
-  ctx.fillRect(0, fy, W, FOOTER_H);
-  ctx.fillStyle = C.red;
-  ctx.fillRect(0, fy, 8, FOOTER_H);
+  // ── Footer (soft Tiffany bar, rounded bottom) ──
+  const fy = CY + CH - FOOTER_H;
+  ctx.fillStyle = C.tiffSoft;
+  ctx.fillRect(CX, fy, CW, FOOTER_H);
 
-  ctx.font = '400 15px "Noto Sans TC", sans-serif';
+  // Dashed decorative top border
+  ctx.strokeStyle = C.tiff;
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6, 8]);
+  ctx.beginPath();
+  ctx.moveTo(CX + 20, fy);
+  ctx.lineTo(CX + CW - 20, fy);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.font = '600 17px "Noto Sans TC", sans-serif';
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
-  ctx.fillStyle = 'rgba(255,255,255,0.75)';
-  ctx.fillText('認同的話，幫我分享', 28, fy + FOOTER_H / 2);
-  const sw = ctx.measureText('認同的話，幫我分享').width;
-  ctx.fillStyle = '#FFB3AA';
-  ctx.fillText(' ►►►', 28 + sw, fy + FOOTER_H / 2);
+  ctx.fillStyle = C.tiffDeep;
+  ctx.fillText('♡ 認同的話，幫我分享給更多人', CX + 36, fy + FOOTER_H / 2);
 
   ctx.textAlign = 'right';
-  ctx.fillStyle = C.white;
-  ctx.fillText('@俠醫楊智鈞', W - 28, fy + FOOTER_H / 2);
+  ctx.fillStyle = C.tiffDark;
+  ctx.font = '700 17px "Noto Sans TC", sans-serif';
+  ctx.fillText('@俠醫楊智鈞', CX + CW - 36, fy + FOOTER_H / 2);
   ctx.textAlign = 'left';
+
+  ctx.restore();
 }
 
 // ─── Preview & Download ───────────────────────────────────────
@@ -670,6 +771,7 @@ function setFormat(f) {
 
 async function redraw() {
   await document.fonts.ready;
+  await logoPromise;
   drawCard(canvas, currentFormat);
   // Responsive scaling: mobile fits width; desktop uses fixed SCALE
   const isMobile = window.matchMedia('(max-width: 900px)').matches;
@@ -690,6 +792,7 @@ window.addEventListener('resize', () => { redraw(); });
 
 async function downloadCard() {
   await document.fonts.ready;
+  await logoPromise;
   const exp = document.createElement('canvas');
   drawCard(exp, currentFormat);
   const name  = document.getElementById('patientName').value.trim();
