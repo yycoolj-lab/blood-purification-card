@@ -355,17 +355,19 @@ const SECTIONS = [
   { name: '肝功能', icon: '🌿', bg: '#FFE8D0', fg: '#D2691E' },
 ];
 
-// ─── Colors (Tiffany blue + 富足品牌綠) ────────────────────────
+// ─── Colors (富足診所抹茶綠) ────────────────────────
+// 以 matcha green 為主色；原 tiff* 變數保留名稱但改為抹茶色階，
+// 以便全檔共用相同語意（主色/深色/柔色/淡色）。
 const C = {
-  bg:          '#F5FBFA',   // very soft tiffany cream
+  bg:          '#F5F9F3',   // very soft matcha cream
   white:       '#FFFFFF',
-  cardShadow:  'rgba(10, 160, 150, 0.15)',
+  cardShadow:  'rgba(45, 95, 74, 0.18)',
 
-  tiff:        '#81D8D0',
-  tiffDark:    '#0ABAB5',
-  tiffDeep:    '#0A8B88',
-  tiffSoft:    '#E0F5F3',
-  tiffTint:    '#F0FAF9',
+  tiff:        '#7CAF89',   // 抹茶中間色（header gradient 亮端）
+  tiffDark:    '#4A7A5C',   // 抹茶深中間色（strokes / attribution）
+  tiffDeep:    '#2D5F4A',   // 富足品牌深綠（文字 / pill fg / after 值）
+  tiffSoft:    '#E4F0E4',   // 抹茶柔色（footer bg / pill bg / 改善 badge bg）
+  tiffTint:    '#F2F8ED',   // 抹茶淡色（表格隔行底色）
 
   brandGreen:  '#2D5F4A',   // 富足品牌深綠
   brandGold:   '#D4A863',   // 富足品牌金
@@ -492,11 +494,11 @@ function drawCard(canvas, fmt) {
   rrect(ctx, CX, CY, CW, CH, CR);
   ctx.clip();
 
-  // ── Header block (Tiffany gradient) ──
+  // ── Header block (Matcha gradient — 富足品牌綠) ──
   const HH = 170;
   const headerGrad = ctx.createLinearGradient(CX, CY, CX + CW, CY + HH);
-  headerGrad.addColorStop(0, '#A8E4DF');
-  headerGrad.addColorStop(1, '#81D8D0');
+  headerGrad.addColorStop(0, '#A7C9A5');   // 抹茶亮色
+  headerGrad.addColorStop(1, '#5E8F6E');   // 抹茶深色
   ctx.fillStyle = headerGrad;
   ctx.fillRect(CX, CY, CW, HH);
 
@@ -552,10 +554,10 @@ function drawCard(canvas, fmt) {
   // ── Column-header pills ──
   const PAD = 40;
   const COL = {
-    label:  CX + PAD,      labelEnd: CX + 440,
-    before: CX + 440,      beforeEnd: CX + 620,
-    after:  CX + 620,      afterEnd:  CX + 800,
-    badge:  CX + 800,      badgeEnd:  CX + CW - PAD + 10,
+    label:  CX + PAD,      labelEnd: CX + 400,
+    before: CX + 400,      beforeEnd: CX + 570,
+    after:  CX + 570,      afterEnd:  CX + 740,
+    badge:  CX + 740,      badgeEnd:  CX + CW - PAD + 10,
   };
 
   const COLH = CY + HH + 30;
@@ -662,21 +664,44 @@ function drawCard(canvas, fmt) {
       ctx.fillStyle = v.after !== null ? C.tiffDeep : '#D8E4E3';
       ctx.fillText(fmtVal(v.after), (COL.after + COL.afterEnd) / 2, cy);
 
-      // Badge pill
+      // Badge pill — arrow 加大 + % 加大，強化視覺重點
       const ch = calcPct(v.before, v.after, item.dir);
       const bcx = (COL.badge + COL.badgeEnd) / 2;
       if (ch) {
-        const BW = 200, BH = Math.min(64, rh * 0.56);
+        const BW = 230, BH = Math.min(76, rh * 0.64);
         ctx.fillStyle = ch.improved ? C.tiffSoft : C.badBg;
         rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, BH / 2);
         ctx.fill();
 
-        ctx.font = `800 ${Math.min(32, BH * 0.52)}px "Noto Sans TC", sans-serif`;
-        ctx.fillStyle = ch.improved ? C.tiffDeep : '#B04A5A';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        const pctSz   = Math.min(40, BH * 0.58);
+        const arrowSz = pctSz * 1.35;               // 箭頭比 % 再大一點
+        const fg = ch.improved ? C.tiffDeep : '#B04A5A';
         const arrow = ch.improved ? '↓' : '↑';
-        ctx.fillText(`${arrow} ${ch.pct.toFixed(1)}%`, bcx, cy + 1);
+        const num   = `${ch.pct.toFixed(1)}%`;
+
+        // 量測寬度以置中
+        ctx.font = `900 ${arrowSz}px "Noto Sans TC", sans-serif`;
+        const arrowW = ctx.measureText(arrow).width;
+        ctx.font = `800 ${pctSz}px "Noto Sans TC", sans-serif`;
+        const numW = ctx.measureText(num).width;
+        const gap = 8;
+        const totalW = arrowW + gap + numW;
+
+        ctx.fillStyle = fg;
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'left';
+        let x = bcx - totalW / 2;
+
+        // 箭頭（加粗、加大）
+        ctx.font = `900 ${arrowSz}px "Noto Sans TC", sans-serif`;
+        ctx.fillText(arrow, x, cy + 1);
+        x += arrowW + gap;
+
+        // 百分比
+        ctx.font = `800 ${pctSz}px "Noto Sans TC", sans-serif`;
+        ctx.fillText(num, x, cy + 1);
+
+        ctx.textAlign = 'center';
       } else {
         ctx.font = '400 34px "Noto Sans TC", sans-serif';
         ctx.fillStyle = '#CBDBD8';
@@ -732,7 +757,7 @@ function drawCard(canvas, fmt) {
     }
   }
 
-  // ── Footer (soft Tiffany bar, rounded bottom) ──
+  // ── Footer (soft matcha bar, rounded bottom) ──
   const fy = CY + CH - FOOTER_H;
   ctx.fillStyle = C.tiffSoft;
   ctx.fillRect(CX, fy, CW, FOOTER_H);
