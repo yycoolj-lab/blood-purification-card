@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>血液淨化成效圖卡 — 俠醫楊智鈞</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -17,7 +17,6 @@
       flex-direction: column;
     }
 
-    /* ─── App Header ─── */
     .app-header {
       display: flex;
       align-items: center;
@@ -27,45 +26,39 @@
       flex-shrink: 0;
     }
     .brand-bar { width: 4px; height: 28px; background: #C0392B; border-radius: 2px; }
-    .app-header h1 {
-      font-family: "Noto Serif TC", serif;
-      font-size: 20px;
-      color: #fff;
-      font-weight: 700;
-    }
+    .app-header h1 { font-family: "Noto Serif TC", serif; font-size: 20px; color: #fff; font-weight: 700; }
     .app-header p { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
 
-    /* ─── Main Layout ─── */
     .app-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
 
-    /* ─── Form Panel ─── */
+    /* ─── Form ─── */
     .form-panel {
-      width: 400px;
+      width: 380px;
       flex-shrink: 0;
       background: #fff;
       border-right: 1px solid #D8E4DE;
       overflow-y: auto;
-      padding: 20px 20px 40px;
+      padding: 24px 22px 40px;
     }
 
-    .form-section { margin-bottom: 22px; }
+    .form-section { margin-bottom: 24px; }
 
     .section-title {
       font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #2D5F4A;
-      margin-bottom: 10px;
+      font-weight: 700;
+      margin-bottom: 12px;
       padding-bottom: 6px;
       border-bottom: 2px solid #2D5F4A;
-      font-weight: 700;
     }
 
     .field-row { display: grid; gap: 8px; margin-bottom: 8px; }
     .field-row.cols-2 { grid-template-columns: 1fr 1fr; }
     .field-row.cols-1 { grid-template-columns: 1fr; }
 
-    .field label {
+    label {
       display: block;
       font-size: 10px;
       color: #6B8070;
@@ -78,62 +71,47 @@
       background: #F5FAF7;
       border: 1px solid #C8DDD4;
       border-radius: 5px;
-      padding: 7px 10px;
-      font-size: 13px;
+      padding: 8px 10px;
+      font-size: 14px;
       color: #1A1A1A;
       font-family: "Noto Sans TC", sans-serif;
       transition: border-color 0.15s;
     }
     input:focus { outline: none; border-color: #2D5F4A; }
     input::placeholder { color: #B0C4B8; }
-    input[type="number"] { font-variant-numeric: tabular-nums; }
 
-    /* ─── Indicator Cards ─── */
-    .indicator-card {
+    .ind-block {
       background: #F5FAF7;
       border: 1px solid #C8DDD4;
-      border-radius: 6px;
-      padding: 8px 10px 10px;
-      margin-bottom: 6px;
-      transition: border-color 0.15s;
-    }
-    .indicator-card:has(.toggle-check:checked) {
-      border-color: #2D5F4A;
-      background: #EEF7F2;
+      border-radius: 7px;
+      padding: 10px 12px 12px;
+      margin-bottom: 8px;
     }
 
-    .indicator-card-head {
+    .ind-block-head {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 7px;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .ind-label { font-size: 13px; font-weight: 700; color: #2D5F4A; }
+    .ind-unit-tag {
+      font-size: 10px;
+      color: #7A9A87;
+      background: #DAE9E1;
+      padding: 2px 7px;
+      border-radius: 3px;
     }
 
-    .toggle-check {
-      width: 14px; height: 14px;
-      accent-color: #2D5F4A;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
+    .ind-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-    .ind-name { font-size: 12px; color: #2A3D33; flex: 1; font-weight: 500; }
-    .ind-unit {
-      font-size: 10px; color: #7A9A87;
-      background: #DAE9E1; padding: 2px 6px; border-radius: 3px;
-    }
-
-    .indicator-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-    .indicator-inputs label {
-      font-size: 10px; color: #7A9A87; margin-bottom: 2px; display: block;
-    }
-
-    /* ─── Preview Panel ─── */
+    /* ─── Preview ─── */
     .preview-panel {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: #E8EEE9;
+      background: #E4EBE5;
       overflow: auto;
       padding: 24px 32px 40px;
     }
@@ -157,11 +135,7 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .fmt-btn.active {
-      background: #2D5F4A;
-      border-color: #2D5F4A;
-      color: #fff;
-    }
+    .fmt-btn.active { background: #2D5F4A; border-color: #2D5F4A; color: #fff; }
 
     .dl-btn {
       padding: 9px 24px;
@@ -173,25 +147,17 @@
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.15s;
     }
     .dl-btn:hover { background: #A93226; }
 
     #previewCanvas {
       display: block;
       box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06);
-      border-radius: 2px;
     }
 
-    .preview-hint {
-      margin-top: 14px;
-      font-size: 11px;
-      color: #8AAA94;
-      text-align: center;
-    }
+    .preview-hint { margin-top: 14px; font-size: 11px; color: #8AAA94; text-align: center; }
 
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #B0C8BA; border-radius: 2px; }
   </style>
 </head>
@@ -201,7 +167,7 @@
   <div class="brand-bar"></div>
   <div>
     <h1>血液淨化成效圖卡產生器</h1>
-    <p>輸入治療前後數值，即時預覽並下載 1080px 高畫質圖卡</p>
+    <p>輸入治療前後數值，即時預覽並下載高畫質圖卡</p>
   </div>
 </header>
 
@@ -211,70 +177,55 @@
 
     <div class="form-section">
       <div class="section-title">基本資訊</div>
-      <div class="field-row cols-1 field">
-        <label>治療項目名稱</label>
-        <input type="text" id="treatmentName" value="血液淨化" placeholder="例：DFPP 血漿雙重過濾">
+      <div class="field-row cols-1">
+        <div><label>治療項目名稱</label>
+        <input type="text" id="treatmentName" value="血液淨化" placeholder="例：DFPP 血漿雙重過濾"></div>
       </div>
       <div class="field-row cols-2">
-        <div class="field">
-          <label>患者姓名（可略）</label>
-          <input type="text" id="patientName" placeholder="王先生">
-        </div>
-        <div class="field">
-          <label>次數 / 備註</label>
-          <input type="text" id="sessionCount" placeholder="第 3 次">
-        </div>
+        <div><label>患者姓名（可略）</label>
+        <input type="text" id="patientName" placeholder="王先生"></div>
+        <div><label>次數 / 備註</label>
+        <input type="text" id="sessionCount" placeholder="第 3 次"></div>
       </div>
       <div class="field-row cols-2">
-        <div class="field">
-          <label>治療前日期</label>
-          <input type="date" id="dateBefore">
-        </div>
-        <div class="field">
-          <label>治療後日期</label>
-          <input type="date" id="dateAfter">
-        </div>
+        <div><label>治療前日期</label>
+        <input type="date" id="dateBefore"></div>
+        <div><label>治療後日期</label>
+        <input type="date" id="dateAfter"></div>
       </div>
     </div>
 
     <div class="form-section">
       <div class="section-title">血脂肪</div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="tc" checked>
-          <span class="ind-name">總膽固醇 TC</span><span class="ind-unit">mg/dL</span>
+
+      <div class="ind-block">
+        <div class="ind-block-head">
+          <span class="ind-label">總膽固醇 TC</span>
+          <span class="ind-unit-tag">mg/dL</span>
         </div>
-        <div class="indicator-inputs">
+        <div class="ind-inputs">
           <div><label>治療前</label><input type="number" data-key="tc" data-field="before" placeholder="245" step="1" min="0"></div>
           <div><label>治療後</label><input type="number" data-key="tc" data-field="after"  placeholder="185" step="1" min="0"></div>
         </div>
       </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="ldl" checked>
-          <span class="ind-name">低密度脂蛋白 LDL-C</span><span class="ind-unit">mg/dL</span>
+
+      <div class="ind-block">
+        <div class="ind-block-head">
+          <span class="ind-label">低密度脂蛋白 LDL-C</span>
+          <span class="ind-unit-tag">mg/dL</span>
         </div>
-        <div class="indicator-inputs">
+        <div class="ind-inputs">
           <div><label>治療前</label><input type="number" data-key="ldl" data-field="before" placeholder="165" step="1" min="0"></div>
           <div><label>治療後</label><input type="number" data-key="ldl" data-field="after"  placeholder="110" step="1" min="0"></div>
         </div>
       </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="hdl" checked>
-          <span class="ind-name">高密度脂蛋白 HDL-C</span><span class="ind-unit">mg/dL</span>
+
+      <div class="ind-block">
+        <div class="ind-block-head">
+          <span class="ind-label">三酸甘油脂 TG</span>
+          <span class="ind-unit-tag">mg/dL</span>
         </div>
-        <div class="indicator-inputs">
-          <div><label>治療前</label><input type="number" data-key="hdl" data-field="before" placeholder="38"  step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="hdl" data-field="after"  placeholder="52"  step="1" min="0"></div>
-        </div>
-      </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="tg" checked>
-          <span class="ind-name">三酸甘油脂 TG</span><span class="ind-unit">mg/dL</span>
-        </div>
-        <div class="indicator-inputs">
+        <div class="ind-inputs">
           <div><label>治療前</label><input type="number" data-key="tg" data-field="before" placeholder="320" step="1" min="0"></div>
           <div><label>治療後</label><input type="number" data-key="tg" data-field="after"  placeholder="185" step="1" min="0"></div>
         </div>
@@ -283,98 +234,37 @@
 
     <div class="form-section">
       <div class="section-title">肝功能</div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="ast" checked>
-          <span class="ind-name">AST（GOT）</span><span class="ind-unit">U/L</span>
+
+      <div class="ind-block">
+        <div class="ind-block-head">
+          <span class="ind-label">AST（GOT）</span>
+          <span class="ind-unit-tag">U/L</span>
         </div>
-        <div class="indicator-inputs">
+        <div class="ind-inputs">
           <div><label>治療前</label><input type="number" data-key="ast" data-field="before" placeholder="85"  step="1" min="0"></div>
           <div><label>治療後</label><input type="number" data-key="ast" data-field="after"  placeholder="35"  step="1" min="0"></div>
         </div>
       </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="alt" checked>
-          <span class="ind-name">ALT（GPT）</span><span class="ind-unit">U/L</span>
+
+      <div class="ind-block">
+        <div class="ind-block-head">
+          <span class="ind-label">ALT（GPT）</span>
+          <span class="ind-unit-tag">U/L</span>
         </div>
-        <div class="indicator-inputs">
+        <div class="ind-inputs">
           <div><label>治療前</label><input type="number" data-key="alt" data-field="before" placeholder="120" step="1" min="0"></div>
           <div><label>治療後</label><input type="number" data-key="alt" data-field="after"  placeholder="42"  step="1" min="0"></div>
         </div>
       </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="tbil">
-          <span class="ind-name">總膽紅素</span><span class="ind-unit">mg/dL</span>
-        </div>
-        <div class="indicator-inputs">
-          <div><label>治療前</label><input type="number" data-key="tbil" data-field="before" step="0.1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="tbil" data-field="after"  step="0.1" min="0"></div>
-        </div>
-      </div>
-    </div>
 
-    <div class="form-section">
-      <div class="section-title">其他指標（勾選後啟用）</div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="glucose">
-          <span class="ind-name">空腹血糖</span><span class="ind-unit">mg/dL</span>
+      <div class="ind-block">
+        <div class="ind-block-head">
+          <span class="ind-label">γ-GT</span>
+          <span class="ind-unit-tag">U/L</span>
         </div>
-        <div class="indicator-inputs">
-          <div><label>治療前</label><input type="number" data-key="glucose" data-field="before" step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="glucose" data-field="after"  step="1" min="0"></div>
-        </div>
-      </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="uric">
-          <span class="ind-name">尿酸</span><span class="ind-unit">mg/dL</span>
-        </div>
-        <div class="indicator-inputs">
-          <div><label>治療前</label><input type="number" data-key="uric" data-field="before" step="0.1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="uric" data-field="after"  step="0.1" min="0"></div>
-        </div>
-      </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="crp">
-          <span class="ind-name">超敏 C 反應蛋白 hs-CRP</span><span class="ind-unit">mg/L</span>
-        </div>
-        <div class="indicator-inputs">
-          <div><label>治療前</label><input type="number" data-key="crp" data-field="before" step="0.01" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="crp" data-field="after"  step="0.01" min="0"></div>
-        </div>
-      </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="fibrin">
-          <span class="ind-name">纖維蛋白原 Fibrinogen</span><span class="ind-unit">mg/dL</span>
-        </div>
-        <div class="indicator-inputs">
-          <div><label>治療前</label><input type="number" data-key="fibrin" data-field="before" step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="fibrin" data-field="after"  step="1" min="0"></div>
-        </div>
-      </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="bun">
-          <span class="ind-name">BUN（尿素氮）</span><span class="ind-unit">mg/dL</span>
-        </div>
-        <div class="indicator-inputs">
-          <div><label>治療前</label><input type="number" data-key="bun" data-field="before" step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="bun" data-field="after"  step="1" min="0"></div>
-        </div>
-      </div>
-      <div class="indicator-card">
-        <div class="indicator-card-head">
-          <input type="checkbox" class="toggle-check" data-key="cr">
-          <span class="ind-name">肌酸酐 Creatinine</span><span class="ind-unit">mg/dL</span>
-        </div>
-        <div class="indicator-inputs">
-          <div><label>治療前</label><input type="number" data-key="cr" data-field="before" step="0.1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="cr" data-field="after"  step="0.1" min="0"></div>
+        <div class="ind-inputs">
+          <div><label>治療前</label><input type="number" data-key="ggt" data-field="before" placeholder="95"  step="1" min="0"></div>
+          <div><label>治療後</label><input type="number" data-key="ggt" data-field="after"  placeholder="45"  step="1" min="0"></div>
         </div>
       </div>
     </div>
@@ -387,61 +277,50 @@
       <button class="fmt-btn"        id="btn45" onclick="setFormat('4:5')">4:5 直式</button>
       <button class="dl-btn" onclick="downloadCard()">下載圖卡 PNG</button>
     </div>
-    <div><canvas id="previewCanvas"></canvas></div>
+    <canvas id="previewCanvas"></canvas>
     <p class="preview-hint">輸出解析度 1080px — 適用 Instagram / Facebook / LINE 分享</p>
   </main>
 
 </div>
 
 <script>
-const META = {
-  tc:      { label: '總膽固醇 TC',        unit: 'mg/dL', dir: 'down', section: '血脂肪' },
-  ldl:     { label: 'LDL-C',             unit: 'mg/dL', dir: 'down', section: '血脂肪' },
-  hdl:     { label: 'HDL-C',             unit: 'mg/dL', dir: 'up',   section: '血脂肪' },
-  tg:      { label: '三酸甘油脂 TG',      unit: 'mg/dL', dir: 'down', section: '血脂肪' },
-  ast:     { label: 'AST（GOT）',         unit: 'U/L',   dir: 'down', section: '肝功能' },
-  alt:     { label: 'ALT（GPT）',         unit: 'U/L',   dir: 'down', section: '肝功能' },
-  tbil:    { label: '總膽紅素',           unit: 'mg/dL', dir: 'down', section: '肝功能' },
-  glucose: { label: '空腹血糖',           unit: 'mg/dL', dir: 'down', section: '其他' },
-  uric:    { label: '尿酸',              unit: 'mg/dL', dir: 'down', section: '其他' },
-  crp:     { label: 'hs-CRP',           unit: 'mg/L',  dir: 'down', section: '其他' },
-  fibrin:  { label: '纖維蛋白原',         unit: 'mg/dL', dir: 'down', section: '其他' },
-  bun:     { label: 'BUN',              unit: 'mg/dL', dir: 'down', section: '其他' },
-  cr:      { label: '肌酸酐 Cr',         unit: 'mg/dL', dir: 'down', section: '其他' },
-};
-const SECTION_ORDER = ['血脂肪', '肝功能', '其他'];
+// ─── Indicators (fixed, no toggle needed) ─────────────────────
+const INDICATORS = [
+  { key: 'tc',  label: '總膽固醇 TC',   unit: 'mg/dL', dir: 'down', section: '血脂肪' },
+  { key: 'ldl', label: 'LDL-C',        unit: 'mg/dL', dir: 'down', section: '血脂肪' },
+  { key: 'tg',  label: '三酸甘油脂 TG', unit: 'mg/dL', dir: 'down', section: '血脂肪' },
+  { key: 'ast', label: 'AST（GOT）',    unit: 'U/L',   dir: 'down', section: '肝功能' },
+  { key: 'alt', label: 'ALT（GPT）',    unit: 'U/L',   dir: 'down', section: '肝功能' },
+  { key: 'ggt', label: 'γ-GT',         unit: 'U/L',   dir: 'down', section: '肝功能' },
+];
 
-// ─── Palette ─────────────────────────────────────────────────
+const SECTIONS = ['血脂肪', '肝功能'];
+
+// ─── Colors ──────────────────────────────────────────────────
 const C = {
   green:     '#2D5F4A',
   greenDark: '#1E4535',
-  greenMid:  '#3D7A60',
   greenLight:'#EBF5EE',
-  greenTint: '#F2FAF5',
-  red:       '#C0392B',
   white:     '#FFFFFF',
   text:      '#1A2820',
-  textMid:   '#3A5244',
   textLight: '#7A9A87',
-  border:    '#C8DDD4',
-  good:      '#1E7A45',
-  goodBg:    '#E6F5EC',
-  bad:       '#C0392B',
+  border:    '#D0DDD6',
+  red:       '#C0392B',
+  good:      '#1A6B3A',
+  goodBg:    '#E4F5EB',
+  bad:       '#B52D20',
   badBg:     '#FDECEA',
   rowAlt:    '#F7FBF8',
-  shadow:    'rgba(45,95,74,0.08)',
 };
 
 let currentFormat = '1:1';
 
 function getData() {
-  const indicators = {};
-  document.querySelectorAll('.toggle-check').forEach(cb => {
-    const key = cb.dataset.key;
+  const vals = {};
+  INDICATORS.forEach(({ key }) => {
     const b = document.querySelector(`input[data-key="${key}"][data-field="before"]`);
     const a = document.querySelector(`input[data-key="${key}"][data-field="after"]`);
-    indicators[key] = {
-      enabled: cb.checked,
+    vals[key] = {
       before: b && b.value !== '' ? parseFloat(b.value) : null,
       after:  a && a.value !== '' ? parseFloat(a.value) : null,
     };
@@ -452,15 +331,13 @@ function getData() {
     sessionCount:  document.getElementById('sessionCount').value.trim(),
     dateBefore:    document.getElementById('dateBefore').value,
     dateAfter:     document.getElementById('dateAfter').value,
-    indicators,
+    vals,
   };
 }
 
-function fmtVal(val, unit) {
-  if (val === null) return '—';
-  if (unit === 'mg/L') return val.toFixed(2);
-  if (val < 10) return val.toFixed(1);
-  return Math.round(val).toString();
+function fmtVal(v) {
+  if (v === null) return '—';
+  return v < 10 ? v.toFixed(1) : Math.round(v).toString();
 }
 
 function calcPct(before, after, dir) {
@@ -473,8 +350,7 @@ function calcPct(before, after, dir) {
 // ─── Canvas Helpers ───────────────────────────────────────────
 function rrect(ctx, x, y, w, h, r) {
   ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
+  ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y);
   ctx.arcTo(x + w, y, x + w, y + r, r);
   ctx.lineTo(x + w, y + h - r);
   ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
@@ -485,275 +361,225 @@ function rrect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-function hline(ctx, x1, x2, y, color, width = 1) {
-  ctx.fillStyle = color;
-  ctx.fillRect(x1, y, x2 - x1, width);
-}
-
-function vline(ctx, x, y1, y2, color, width = 1) {
-  ctx.fillStyle = color;
-  ctx.fillRect(x, y1, width, y2 - y1);
-}
-
-// ─── Card Renderer ────────────────────────────────────────────
+// ─── Draw Card ───────────────────────────────────────────────
 function drawCard(canvas, fmt) {
   const W = 1080;
   const H = fmt === '4:5' ? 1350 : 1080;
-  canvas.width  = W;
-  canvas.height = H;
-
+  canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
   const d = getData();
 
-  // ── White background ──
+  // White background
   ctx.fillStyle = C.white;
   ctx.fillRect(0, 0, W, H);
 
-  // ── Top Header bar ──
-  const HH = 88;
+  // ── Header ──
+  const HH = 96;
   ctx.fillStyle = C.green;
   ctx.fillRect(0, 0, W, HH);
-
-  // Red accent strip
   ctx.fillStyle = C.red;
   ctx.fillRect(0, 0, 8, HH);
 
-  // Brand name
-  ctx.font = '700 20px "Noto Sans TC", sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.65)';
+  // Clinic name
+  ctx.font = '500 17px "Noto Sans TC", sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
-  ctx.fillText('富足診所', 32, HH / 2 - 12);
+  ctx.fillText('富足診所', 30, HH / 2 - 16);
 
   // Treatment title
-  ctx.font = '700 36px "Noto Serif TC", serif';
+  ctx.font = '700 38px "Noto Serif TC", serif';
   ctx.fillStyle = C.white;
-  ctx.fillText(d.treatmentName + '  成效報告', 32, HH / 2 + 14);
+  ctx.fillText(d.treatmentName + '  成效報告', 30, HH / 2 + 16);
 
-  // Date range (right side)
-  if (d.dateBefore || d.dateAfter) {
-    const dateStr = [d.dateBefore, d.dateAfter].filter(Boolean).map(s => s.replace(/-/g, '/')).join(' → ');
-    ctx.font = '400 15px "Noto Sans TC", sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
-    ctx.textAlign = 'right';
-    ctx.fillText(dateStr, W - 36, HH / 2 - 10);
-  }
+  // Right: patient + dates
+  ctx.textAlign = 'right';
   if (d.patientName || d.sessionCount) {
-    const infoStr = [d.patientName, d.sessionCount].filter(Boolean).join('　');
-    ctx.font = '500 16px "Noto Sans TC", sans-serif';
+    ctx.font = '700 17px "Noto Sans TC", sans-serif';
     ctx.fillStyle = C.white;
-    ctx.textAlign = 'right';
-    ctx.fillText(infoStr, W - 36, HH / 2 + 14);
+    ctx.fillText([d.patientName, d.sessionCount].filter(Boolean).join('　'), W - 32, HH / 2 - 12);
+  }
+  const dateStr = [d.dateBefore, d.dateAfter].filter(Boolean).map(s => s.replace(/-/g, '/')).join(' → ');
+  if (dateStr) {
+    ctx.font = '400 14px "Noto Sans TC", sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.65)';
+    ctx.fillText(dateStr, W - 32, HH / 2 + 14);
   }
   ctx.textAlign = 'left';
 
-  // ── Column Headers ──
-  const PAD = 36;
+  // ── Column header bar ──
+  const PAD = 32;
   const COL = {
-    label:  PAD,
-    labelW: 310,
-    before: PAD + 310,
-    beforeW:180,
-    after:  PAD + 310 + 180,
-    afterW: 200,
-    badge:  PAD + 310 + 180 + 200,
-    badgeW: W - PAD - (PAD + 310 + 180 + 200),
+    label:  PAD,        labelEnd: 380,
+    before: 380,        beforeEnd: 580,
+    after:  580,        afterEnd:  780,
+    badge:  780,        badgeEnd:  W - PAD,
   };
 
-  const COLH_Y = HH;
-  const COLH_H = 48;
-
+  const COLH = HH;
+  const COLH_H = 50;
   ctx.fillStyle = C.greenLight;
-  ctx.fillRect(0, COLH_Y, W, COLH_H);
+  ctx.fillRect(0, COLH, W, COLH_H);
 
-  ctx.font = '700 14px "Noto Sans TC", sans-serif';
+  ctx.font = '700 15px "Noto Sans TC", sans-serif';
   ctx.fillStyle = C.green;
   ctx.textBaseline = 'middle';
+  const chY = COLH + COLH_H / 2;
 
-  const colMidY = COLH_Y + COLH_H / 2;
-  ctx.fillText('指標', COL.label + 12, colMidY);
-
+  ctx.textAlign = 'left';
+  ctx.fillText('指標', COL.label + 12, chY);
   ctx.textAlign = 'center';
-  ctx.fillText('治療前', COL.before + COL.beforeW / 2, colMidY);
-  ctx.fillText('治療後', COL.after  + COL.afterW  / 2, colMidY);
-  ctx.fillText('改善幅度', COL.badge + COL.badgeW  / 2, colMidY);
+  ctx.fillText('治療前', (COL.before + COL.beforeEnd) / 2, chY);
+  ctx.fillText('治療後', (COL.after  + COL.afterEnd)  / 2, chY);
+  ctx.fillText('改善幅度', (COL.badge + COL.badgeEnd) / 2, chY);
   ctx.textAlign = 'left';
 
-  // Vertical separators in column header
+  // Vertical dividers in col header
   [COL.before, COL.after, COL.badge].forEach(x => {
-    vline(ctx, x, COLH_Y, COLH_Y + COLH_H, C.border, 1);
+    ctx.fillStyle = C.border;
+    ctx.fillRect(x, COLH, 1, COLH_H);
   });
+  // Bottom line
+  ctx.fillStyle = C.green;
+  ctx.fillRect(0, COLH + COLH_H, W, 2);
 
-  hline(ctx, 0, W, COLH_Y + COLH_H, C.green, 2);
-
-  // ── Build sections ──
-  const sections = {};
-  SECTION_ORDER.forEach(s => { sections[s] = []; });
-  Object.entries(d.indicators).forEach(([key, val]) => {
-    if (!val.enabled) return;
-    const m = META[key];
-    if (!m) return;
-    sections[m.section].push({ key, ...m, ...val });
-  });
-
-  let totalRows = 0, activeSections = 0;
-  SECTION_ORDER.forEach(s => {
-    if (sections[s].length > 0) { totalRows += sections[s].length; activeSections++; }
-  });
-
-  const FOOTER_H = 62;
-  const contentStart = COLH_Y + COLH_H + 2;
+  // ── Rows ──
+  const FOOTER_H = 64;
+  const contentStart = COLH + COLH_H + 2;
   const contentEnd   = H - FOOTER_H;
-  const totalSectionH = activeSections * 42;
-  const availForRows  = contentEnd - contentStart - totalSectionH;
-  const ROW_H = totalRows > 0
-    ? Math.max(54, Math.min(fmt === '4:5' ? 96 : 82, Math.floor(availForRows / totalRows)))
-    : 70;
+  const SH = 44; // section header height
+
+  // Calculate row height
+  const totalRows = INDICATORS.length;
+  const totalSections = SECTIONS.length;
+  const availForRows = contentEnd - contentStart - totalSections * SH;
+  const ROW_H = Math.max(56, Math.min(fmt === '4:5' ? 110 : 90, Math.floor(availForRows / totalRows)));
 
   let y = contentStart;
-  let rowIndex = 0;
+  let rowIdx = 0;
 
-  SECTION_ORDER.forEach(sName => {
-    const items = sections[sName];
-    if (!items.length) return;
+  SECTIONS.forEach(sName => {
+    const items = INDICATORS.filter(i => i.section === sName);
 
-    // Section header row
-    const SH = 42;
+    // Section header
     ctx.fillStyle = C.greenDark;
     ctx.fillRect(0, y, W, SH);
-
-    // Section label
-    ctx.font = '700 13px "Noto Sans TC", sans-serif';
+    ctx.font = '700 14px "Noto Sans TC", sans-serif';
     ctx.fillStyle = C.white;
     ctx.textBaseline = 'middle';
     ctx.fillText('■  ' + sName, COL.label + 12, y + SH / 2);
-
-    // Section column labels (subtle)
-    ctx.font = '400 12px "Noto Sans TC", sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
-    ctx.textAlign = 'center';
-    ctx.fillText('(mg/dL)', COL.before + COL.beforeW / 2, y + SH / 2);
-    ctx.textAlign = 'left';
-
     y += SH;
 
-    items.forEach((item, i) => {
-      const rowY = y;
-      const cy   = rowY + ROW_H / 2;
+    items.forEach(item => {
+      const ry = y;
+      const cy = ry + ROW_H / 2;
+      const v  = d.vals[item.key];
 
       // Row bg
-      ctx.fillStyle = rowIndex % 2 === 0 ? C.white : C.rowAlt;
-      ctx.fillRect(0, rowY, W, ROW_H);
+      ctx.fillStyle = rowIdx % 2 === 0 ? C.white : C.rowAlt;
+      ctx.fillRect(0, ry, W, ROW_H);
 
-      // Row bottom border
-      hline(ctx, 0, W, rowY + ROW_H - 1, C.border, 1);
+      // Bottom border
+      ctx.fillStyle = C.border;
+      ctx.fillRect(0, ry + ROW_H - 1, W, 1);
 
-      // Vertical col dividers
+      // Col dividers
       [COL.before, COL.after, COL.badge].forEach(x => {
-        vline(ctx, x, rowY, rowY + ROW_H, C.border, 1);
+        ctx.fillStyle = C.border;
+        ctx.fillRect(x, ry, 1, ROW_H);
       });
 
-      // Indicator name
-      const labelFontSz = Math.min(20, ROW_H * 0.28);
-      ctx.font = `500 ${labelFontSz}px "Noto Sans TC", sans-serif`;
+      // Label
+      const lsz = Math.min(21, ROW_H * 0.27);
+      ctx.font = `600 ${lsz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.text;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'left';
-      ctx.fillText(item.label, COL.label + 12, cy);
+      ctx.fillText(item.label, COL.label + 12, cy - 4);
 
-      // Unit badge under label
-      ctx.font = `400 11px "Noto Sans TC", sans-serif`;
+      ctx.font = `400 12px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.textLight;
-      ctx.fillText(item.unit, COL.label + 12, cy + labelFontSz * 0.72);
+      ctx.fillText(item.unit, COL.label + 12, cy + lsz * 0.65);
 
-      // Before value
-      const bStr = fmtVal(item.before, item.unit);
-      const beforeFontSz = Math.min(24, ROW_H * 0.32);
-      ctx.font = `400 ${beforeFontSz}px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = item.before !== null ? '#5A7A6A' : '#C0C0C0';
+      // Before
+      const bSz = Math.min(24, ROW_H * 0.3);
+      ctx.font = `400 ${bSz}px "Noto Sans TC", sans-serif`;
+      ctx.fillStyle = v.before !== null ? '#4A6A58' : '#C8D8CC';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(bStr, COL.before + COL.beforeW / 2, cy);
+      ctx.fillText(fmtVal(v.before), (COL.before + COL.beforeEnd) / 2, cy);
 
-      // After value (larger, green)
-      const aStr = fmtVal(item.after, item.unit);
-      const afterFontSz = Math.min(28, ROW_H * 0.37);
-      ctx.font = `700 ${afterFontSz}px "Noto Sans TC", sans-serif`;
-      ctx.fillStyle = item.after !== null ? C.green : '#C0C0C0';
-      ctx.fillText(aStr, COL.after + COL.afterW / 2, cy);
+      // After
+      const aSz = Math.min(30, ROW_H * 0.36);
+      ctx.font = `700 ${aSz}px "Noto Sans TC", sans-serif`;
+      ctx.fillStyle = v.after !== null ? C.green : '#C8D8CC';
+      ctx.fillText(fmtVal(v.after), (COL.after + COL.afterEnd) / 2, cy);
 
-      // Change badge
-      const ch = calcPct(item.before, item.after, item.dir);
-      const badgeCx = COL.badge + COL.badgeW / 2;
-
+      // Badge
+      const ch = calcPct(v.before, v.after, item.dir);
+      const bcx = (COL.badge + COL.badgeEnd) / 2;
       if (ch) {
-        const BW = 110;
-        const BH = Math.min(38, ROW_H * 0.5);
-        const bx = badgeCx - BW / 2;
-        const by = cy - BH / 2;
-
+        const BW = 118, BH = Math.min(42, ROW_H * 0.52);
         ctx.fillStyle = ch.improved ? C.goodBg : C.badBg;
-        rrect(ctx, bx, by, BW, BH, 6);
+        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 7);
         ctx.fill();
-
         ctx.strokeStyle = ch.improved ? C.good : C.bad;
         ctx.lineWidth = 1.5;
-        rrect(ctx, bx, by, BW, BH, 6);
+        rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, 7);
         ctx.stroke();
 
-        const pctStr = `${ch.arrow} ${ch.pct.toFixed(1)}%`;
-        const pctFontSz = Math.min(20, BH * 0.54);
-        ctx.font = `700 ${pctFontSz}px "Noto Sans TC", sans-serif`;
+        ctx.font = `700 ${Math.min(21, BH * 0.52)}px "Noto Sans TC", sans-serif`;
         ctx.fillStyle = ch.improved ? C.good : C.bad;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(pctStr, badgeCx, cy + 1);
+        ctx.fillText(`${ch.arrow} ${ch.pct.toFixed(1)}%`, bcx, cy + 1);
       } else {
-        ctx.font = '400 18px "Noto Sans TC", sans-serif';
-        ctx.fillStyle = '#C0C0C0';
+        ctx.font = '400 20px "Noto Sans TC", sans-serif';
+        ctx.fillStyle = '#C0C8C4';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('—', badgeCx, cy);
+        ctx.fillText('—', bcx, cy);
       }
 
       ctx.textAlign = 'left';
       y += ROW_H;
-      rowIndex++;
+      rowIdx++;
     });
   });
 
-  // Fill remaining space if short on content
+  // Fill gap
   if (y < contentEnd) {
     ctx.fillStyle = C.white;
     ctx.fillRect(0, y, W, contentEnd - y);
-    hline(ctx, 0, W, contentEnd, C.border, 1);
   }
+  ctx.fillStyle = C.border;
+  ctx.fillRect(0, contentEnd, W, 1);
 
   // ── Footer ──
-  const footerY = H - FOOTER_H;
+  const fy = H - FOOTER_H;
   ctx.fillStyle = C.green;
-  ctx.fillRect(0, footerY, W, FOOTER_H);
+  ctx.fillRect(0, fy, W, FOOTER_H);
   ctx.fillStyle = C.red;
-  ctx.fillRect(0, footerY, 8, FOOTER_H);
+  ctx.fillRect(0, fy, 8, FOOTER_H);
 
-  ctx.font = '400 14px "Noto Sans TC", sans-serif';
+  ctx.font = '400 15px "Noto Sans TC", sans-serif';
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
   ctx.fillStyle = 'rgba(255,255,255,0.75)';
-  ctx.fillText('認同的話，幫我分享', 32, footerY + FOOTER_H / 2);
-  const shareW = ctx.measureText('認同的話，幫我分享').width;
+  ctx.fillText('認同的話，幫我分享', 28, fy + FOOTER_H / 2);
+  const sw = ctx.measureText('認同的話，幫我分享').width;
   ctx.fillStyle = '#FFB3AA';
-  ctx.fillText(' ►►►', 32 + shareW, footerY + FOOTER_H / 2);
+  ctx.fillText(' ►►►', 28 + sw, fy + FOOTER_H / 2);
 
   ctx.textAlign = 'right';
   ctx.fillStyle = C.white;
-  ctx.fillText('@俠醫楊智鈞', W - 32, footerY + FOOTER_H / 2);
+  ctx.fillText('@俠醫楊智鈞', W - 28, fy + FOOTER_H / 2);
   ctx.textAlign = 'left';
 }
 
-// ─── Preview ─────────────────────────────────────────────────
+// ─── Preview & Download ───────────────────────────────────────
 const canvas = document.getElementById('previewCanvas');
-const SCALE  = 0.44;
+const SCALE = 0.44;
 
 function setFormat(f) {
   currentFormat = f;
@@ -773,25 +599,23 @@ async function downloadCard() {
   await document.fonts.ready;
   const exp = document.createElement('canvas');
   drawCard(exp, currentFormat);
-  const name = document.getElementById('patientName').value.trim();
+  const name  = document.getElementById('patientName').value.trim();
   const fname = `血液淨化成效_${currentFormat.replace(':', 'x')}${name ? '_' + name : ''}.png`;
   exp.toBlob(blob => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = fname;
-    a.click();
+    a.href = url; a.download = fname; a.click();
     URL.revokeObjectURL(url);
   }, 'image/png');
 }
 
-// ─── Events ──────────────────────────────────────────────────
 let t;
-document.querySelectorAll('input').forEach(el => {
-  el.addEventListener('input', () => { clearTimeout(t); t = setTimeout(redraw, 120); });
-});
+document.querySelectorAll('input').forEach(el =>
+  el.addEventListener('input', () => { clearTimeout(t); t = setTimeout(redraw, 100); })
+);
 
 const today = new Date();
-document.getElementById('dateAfter').value = today.toISOString().slice(0, 10);
+document.getElementById('dateAfter').value  = today.toISOString().slice(0, 10);
 const prev = new Date(today); prev.setDate(prev.getDate() - 7);
 document.getElementById('dateBefore').value = prev.toISOString().slice(0, 10);
 
