@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>血液淨化成效圖卡 — 俠醫楊智鈞</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>血液淨化 Before / After 成效圖卡 — 富足診所</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -40,7 +40,7 @@
 
     /* ─── Form ─── */
     .form-panel {
-      width: 380px;
+      width: 400px;
       flex-shrink: 0;
       background: #fff;
       border-right: 1px solid #D8E4DE;
@@ -73,7 +73,7 @@
       font-weight: 500;
     }
 
-    input[type="text"], input[type="number"], input[type="date"] {
+    input[type="text"], input[type="number"], input[type="date"], input[type="url"], select, textarea {
       width: 100%;
       background: #F5FAF7;
       border: 1px solid #C8DDD4;
@@ -85,8 +85,12 @@
       font-family: "Noto Sans TC", sans-serif;
       transition: border-color 0.15s;
     }
-    input:focus { outline: none; border-color: #2D5F4A; }
-    input::placeholder { color: #B0C4B8; }
+    textarea { resize: vertical; min-height: 84px; font-size: 13px; line-height: 1.4; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #2D5F4A; }
+    input::placeholder, textarea::placeholder { color: #B0C4B8; }
+
+    .check-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #3A5558; margin: 6px 0; cursor: pointer; }
+    .check-row input { width: 16px; height: 16px; accent-color: #2D5F4A; }
 
     .ind-block {
       background: #F5FAF7;
@@ -113,6 +117,47 @@
 
     .ind-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
+    /* ─── Import panel ─── */
+    .import-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+    .import-tab {
+      flex: 1;
+      padding: 7px 4px;
+      font-size: 12px;
+      background: #F5FAF7;
+      border: 1px solid #C8DDD4;
+      border-radius: 5px;
+      color: #4A7A5C;
+      font-family: "Noto Sans TC", sans-serif;
+      cursor: pointer;
+    }
+    .import-tab.active { background: #2D5F4A; border-color: #2D5F4A; color: #fff; font-weight: 700; }
+    .import-pane { display: none; }
+    .import-pane.active { display: block; }
+    .import-hint { font-size: 11px; color: #7A9A87; line-height: 1.5; margin-top: 6px; }
+    .import-hint b { color: #2D5F4A; }
+    .import-status { font-size: 12px; margin-top: 8px; padding: 6px 10px; border-radius: 5px; display: none; line-height: 1.5; }
+    .import-status.ok  { display: block; background: #E4F0E4; color: #2D5F4A; }
+    .import-status.err { display: block; background: #FFE4EA; color: #B04A5A; }
+    .btn-sm {
+      padding: 8px 14px;
+      background: #2D5F4A;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-sm:hover { background: #244C3B; }
+    .btn-sm:disabled { background: #9FB8A8; cursor: default; }
+    .url-row { display: flex; gap: 6px; }
+    .url-row input { flex: 1; }
+    .patient-picker { margin-top: 10px; display: none; }
+    .patient-picker.show { display: block; }
+    input[type="file"] { font-size: 12px; }
+
     /* ─── Preview ─── */
     .preview-panel {
       flex: 1;
@@ -127,13 +172,15 @@
     .preview-toolbar {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 24px;
       flex-shrink: 0;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .fmt-btn {
-      padding: 8px 18px;
+      padding: 8px 14px;
       background: #fff;
       border: 1.5px solid #B0C8BA;
       border-radius: 5px;
@@ -155,15 +202,17 @@
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
+      margin-left: 6px;
     }
     .dl-btn:hover { background: #A93226; }
 
     #previewCanvas {
       display: block;
       box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06);
+      max-width: 100%;
     }
 
-    .preview-hint { margin-top: 14px; font-size: 11px; color: #8AAA94; text-align: center; }
+    .preview-hint { margin-top: 14px; font-size: 11px; color: #8AAA94; text-align: center; line-height: 1.6; }
 
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: #B0C8BA; border-radius: 2px; }
@@ -177,7 +226,6 @@
         overflow: visible;
       }
 
-      /* Form on TOP on mobile */
       .form-panel {
         order: 1;
         width: 100%;
@@ -187,7 +235,6 @@
         padding: 20px 16px 28px;
       }
 
-      /* Preview below (scroll down to see/download) */
       .preview-panel {
         order: 2;
         width: 100%;
@@ -195,20 +242,10 @@
         padding: 20px 12px 40px;
       }
 
-      .preview-toolbar {
-        margin-bottom: 14px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
+      .preview-toolbar { margin-bottom: 14px; }
 
-      .fmt-btn, .dl-btn { font-size: 14px; padding: 9px 16px; }
+      .fmt-btn, .dl-btn { font-size: 14px; padding: 9px 14px; }
       .dl-btn { padding: 11px 22px; font-size: 15px; }
-
-      #previewCanvas {
-        max-width: 100%;
-        height: auto !important;
-        width: auto !important;
-      }
 
       .preview-hint { font-size: 11px; margin-top: 10px; }
 
@@ -217,7 +254,6 @@
       .app-header p { font-size: 11px; }
     }
 
-    /* Phones (< 480px): even tighter */
     @media (max-width: 480px) {
       .ind-inputs { grid-template-columns: 1fr 1fr; gap: 6px; }
       .ind-block { padding: 8px 10px 10px; }
@@ -230,8 +266,8 @@
 <header class="app-header">
   <div class="brand-bar"></div>
   <div>
-    <h1>血液淨化成效圖卡產生器</h1>
-    <p>輸入治療前後數值，即時預覽並下載高畫質圖卡</p>
+    <h1>血液淨化 Before / After 成效圖卡</h1>
+    <p>富足診所 · 手動輸入或從血液淨化登記表帶入，即時預覽並下載高畫質圖卡</p>
   </div>
 </header>
 
@@ -239,6 +275,53 @@
 
   <aside class="form-panel">
 
+    <!-- ───── 從登記表帶入 ───── -->
+    <div class="form-section">
+      <div class="section-title">從血液淨化登記表帶入</div>
+
+      <div class="import-tabs">
+        <button class="import-tab active" data-tab="paste" onclick="showImportTab('paste')">貼上表格</button>
+        <button class="import-tab" data-tab="file"  onclick="showImportTab('file')">上傳 CSV</button>
+        <button class="import-tab" data-tab="sheet" onclick="showImportTab('sheet')">Google 試算表</button>
+      </div>
+
+      <div class="import-pane active" id="pane-paste">
+        <textarea id="pasteArea" placeholder="在 Google 試算表選取患者列（建議連同標題列）→ 複製 → 貼到這裡"></textarea>
+        <div class="import-hint">貼上後會自動辨識欄位。若沒有標題列，會依「血液淨化資料登記」的固定欄位順序解讀。</div>
+      </div>
+
+      <div class="import-pane" id="pane-file">
+        <input type="file" id="csvFile" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values">
+        <div class="import-hint">在 Google 試算表選「檔案 → 下載 → 逗號分隔值 (.csv)」後上傳。</div>
+      </div>
+
+      <div class="import-pane" id="pane-sheet">
+        <div class="url-row">
+          <input type="url" id="sheetUrl" placeholder="貼上 Google 試算表網址">
+          <button class="btn-sm" id="sheetLoadBtn" onclick="loadFromSheet()">載入</button>
+        </div>
+        <div class="import-hint">
+          需先在試算表按「共用」→ 一般存取權設為 <b>知道連結的使用者：檢視者</b>，網頁才讀得到。
+          網址會記在這台裝置，下次直接按「載入」即可。若網址含 <b>#gid=</b>，會讀取該工作表。
+        </div>
+      </div>
+
+      <div class="import-status" id="importStatus"></div>
+
+      <div class="patient-picker" id="patientPicker">
+        <div class="field-row cols-1" style="margin-top:6px">
+          <div><label>搜尋（病歷號 / 姓名 / 日期）</label>
+          <input type="text" id="patientFilter" placeholder="輸入關鍵字篩選"></div>
+        </div>
+        <div class="field-row cols-1">
+          <div><label>選擇患者（選了就會自動填入下方數值）</label>
+          <select id="patientSelect"></select></div>
+        </div>
+        <label class="check-row"><input type="checkbox" id="maskName" checked> 姓名遮罩（例：李○貞）— 社群分享建議勾選</label>
+      </div>
+    </div>
+
+    <!-- ───── 基本資訊 ───── -->
     <div class="form-section">
       <div class="section-title">基本資訊</div>
       <div class="field-row cols-1">
@@ -248,11 +331,25 @@
       <div class="field-row cols-2">
         <div><label>患者姓名（可略）</label>
         <input type="text" id="patientName" placeholder="王先生"></div>
+        <div><label>治療日期（可略）</label>
+        <input type="text" id="treatDate" placeholder="2026/1/3"></div>
       </div>
     </div>
 
+    <!-- ───── 血脂肪 ───── -->
     <div class="form-section">
       <div class="section-title">血脂肪</div>
+
+      <div class="ind-block">
+        <div class="ind-block-head">
+          <span class="ind-label">三酸甘油酯 TG</span>
+          <span class="ind-unit-tag">mg/dL</span>
+        </div>
+        <div class="ind-inputs">
+          <div><label>治療前</label><input type="number" data-key="tg" data-field="before" placeholder="320" step="1" min="0"></div>
+          <div><label>治療後</label><input type="number" data-key="tg" data-field="after"  placeholder="185" step="1" min="0"></div>
+        </div>
+      </div>
 
       <div class="ind-block">
         <div class="ind-block-head">
@@ -267,7 +364,7 @@
 
       <div class="ind-block">
         <div class="ind-block-head">
-          <span class="ind-label">低密度脂蛋白 LDL-C</span>
+          <span class="ind-label">低密度膽固醇 LDL-C</span>
           <span class="ind-unit-tag">mg/dL</span>
         </div>
         <div class="ind-inputs">
@@ -275,19 +372,9 @@
           <div><label>治療後</label><input type="number" data-key="ldl" data-field="after"  placeholder="110" step="1" min="0"></div>
         </div>
       </div>
-
-      <div class="ind-block">
-        <div class="ind-block-head">
-          <span class="ind-label">三酸甘油脂 TG</span>
-          <span class="ind-unit-tag">mg/dL</span>
-        </div>
-        <div class="ind-inputs">
-          <div><label>治療前</label><input type="number" data-key="tg" data-field="before" placeholder="320" step="1" min="0"></div>
-          <div><label>治療後</label><input type="number" data-key="tg" data-field="after"  placeholder="185" step="1" min="0"></div>
-        </div>
-      </div>
     </div>
 
+    <!-- ───── 肝功能 ───── -->
     <div class="form-section">
       <div class="section-title">肝功能</div>
 
@@ -315,7 +402,7 @@
 
       <div class="ind-block">
         <div class="ind-block-head">
-          <span class="ind-label">γ-GT</span>
+          <span class="ind-label">Gamma-GT（γ-GT）</span>
           <span class="ind-unit-tag">U/L</span>
         </div>
         <div class="ind-inputs">
@@ -325,29 +412,47 @@
       </div>
     </div>
 
+    <!-- ───── 顯示設定 ───── -->
+    <div class="form-section">
+      <div class="section-title">顯示設定</div>
+      <div class="field-row cols-2">
+        <div><label>第 4 欄標題（絕對降幅）</label>
+        <input type="text" id="labelDrop" value="降幅"></div>
+        <div><label>第 5 欄標題（百分比）</label>
+        <input type="text" id="labelClear" value="清除率"></div>
+      </div>
+      <label class="check-row"><input type="checkbox" id="onlyFilled" checked> 只顯示有輸入數值的指標（空白列自動隱藏）</label>
+      <label class="check-row"><input type="checkbox" id="showTagline" checked> 顯示品牌標語</label>
+      <div class="import-hint">清除率 ＝（治療前 − 治療後）÷ 治療前 × 100%；降幅 ＝ 治療前 − 治療後（原單位）。</div>
+    </div>
+
   </aside>
 
   <main class="preview-panel">
     <div class="preview-toolbar">
-      <button class="fmt-btn active" id="btn11" onclick="setFormat('1:1')">1:1 方形</button>
-      <button class="fmt-btn"        id="btn45" onclick="setFormat('4:5')">4:5 直式</button>
+      <button class="fmt-btn active" data-fmt="1:1"  onclick="setFormat('1:1')">1:1 方形</button>
+      <button class="fmt-btn"        data-fmt="4:5"  onclick="setFormat('4:5')">4:5 直式</button>
+      <button class="fmt-btn"        data-fmt="3:4"  onclick="setFormat('3:4')">3:4 直式</button>
+      <button class="fmt-btn"        data-fmt="4:3"  onclick="setFormat('4:3')">4:3 橫式</button>
+      <button class="fmt-btn"        data-fmt="16:9" onclick="setFormat('16:9')">16:9 橫式</button>
       <button class="dl-btn" onclick="downloadCard()">下載圖卡 PNG</button>
     </div>
     <canvas id="previewCanvas"></canvas>
-    <p class="preview-hint">輸出解析度 1080px — 適用 Instagram / Facebook / LINE 分享</p>
+    <p class="preview-hint" id="previewHint">輸出解析度 1080 × 1080 px — 適用 Instagram / Facebook / LINE 分享</p>
   </main>
 
 </div>
 
 <script>
-// ─── Indicators (fixed, no toggle needed) ─────────────────────
+// ─── Indicators ───────────────────────────────────────────────
+// 順序依院方需求：三酸甘油酯、膽固醇、低密度膽固醇、肝功能、Gamma-GT
 const INDICATORS = [
-  { key: 'tc',  label: '總膽固醇 TC',   unit: 'mg/dL', dir: 'down', section: '血脂肪', dot: '#7FD5CE' },
-  { key: 'ldl', label: 'LDL-C',        unit: 'mg/dL', dir: 'down', section: '血脂肪', dot: '#A5E0DA' },
-  { key: 'tg',  label: '三酸甘油脂 TG', unit: 'mg/dL', dir: 'down', section: '血脂肪', dot: '#B7DFEA' },
-  { key: 'ast', label: 'AST（GOT）',    unit: 'U/L',   dir: 'down', section: '肝功能', dot: '#A8D8C0' },
-  { key: 'alt', label: 'ALT（GPT）',    unit: 'U/L',   dir: 'down', section: '肝功能', dot: '#C9E4C5' },
-  { key: 'ggt', label: 'γ-GT',         unit: 'U/L',   dir: 'down', section: '肝功能', dot: '#D8EBD0' },
+  { key: 'tg',  label: '三酸甘油酯',   sub: 'TG · mg/dL',      unit: 'mg/dL', section: '血脂肪', dot: '#B7DFEA' },
+  { key: 'tc',  label: '總膽固醇',     sub: 'TC · mg/dL',      unit: 'mg/dL', section: '血脂肪', dot: '#7FD5CE' },
+  { key: 'ldl', label: '低密度膽固醇', sub: 'LDL-C · mg/dL',   unit: 'mg/dL', section: '血脂肪', dot: '#A5E0DA' },
+  { key: 'ast', label: '肝功能 AST',   sub: 'GOT · U/L',       unit: 'U/L',   section: '肝功能', dot: '#A8D8C0' },
+  { key: 'alt', label: '肝功能 ALT',   sub: 'GPT · U/L',       unit: 'U/L',   section: '肝功能', dot: '#C9E4C5' },
+  { key: 'ggt', label: 'Gamma-GT',     sub: 'γ-GT · U/L',      unit: 'U/L',   section: '肝功能', dot: '#D8EBD0' },
 ];
 
 const SECTIONS = [
@@ -355,47 +460,38 @@ const SECTIONS = [
   { name: '肝功能', icon: '🌿', bg: '#FFE8D0', fg: '#D2691E' },
 ];
 
+// 輸出尺寸（短邊固定 1080）
+const FORMATS = {
+  '1:1':  { w: 1080, h: 1080, hint: 'Instagram / Facebook / LINE 分享' },
+  '4:5':  { w: 1080, h: 1350, hint: 'Instagram 直式貼文' },
+  '3:4':  { w: 1080, h: 1440, hint: 'LINE / 手機閱讀' },
+  '4:3':  { w: 1440, h: 1080, hint: '簡報 / 網站 / Facebook 橫式' },
+  '16:9': { w: 1920, h: 1080, hint: 'YouTube 縮圖 / 簡報 / 網站橫幅' },
+};
+
 // ─── Colors (富足診所抹茶綠) ────────────────────────
-// 以 matcha green 為主色；原 tiff* 變數保留名稱但改為抹茶色階，
-// 以便全檔共用相同語意（主色/深色/柔色/淡色）。
 const C = {
-  bg:          '#F5F9F3',   // very soft matcha cream
+  bg:          '#F5F9F3',
   white:       '#FFFFFF',
   cardShadow:  'rgba(45, 95, 74, 0.18)',
 
-  tiff:        '#7CAF89',   // 抹茶中間色（header gradient 亮端）
-  tiffDark:    '#4A7A5C',   // 抹茶深中間色（strokes / attribution）
-  tiffDeep:    '#2D5F4A',   // 富足品牌深綠（文字 / pill fg / after 值）
-  tiffSoft:    '#E4F0E4',   // 抹茶柔色（footer bg / pill bg / 改善 badge bg）
-  tiffTint:    '#F2F8ED',   // 抹茶淡色（表格隔行底色）
+  tiff:        '#7CAF89',
+  tiffDark:    '#4A7A5C',
+  tiffDeep:    '#2D5F4A',
+  tiffSoft:    '#E4F0E4',
+  tiffTint:    '#F2F8ED',
 
-  brandGreen:  '#2D5F4A',   // 富足品牌深綠
-  brandGold:   '#D4A863',   // 富足品牌金
+  brandGreen:  '#2D5F4A',
+  brandGold:   '#D4A863',
 
-  mint:        '#85D4B2',
-  mintDark:    '#3F9573',
-  mintSoft:    '#DFF3E8',
-
-  butter:      '#FFE89E',
   butterSoft:  '#FFF4D2',
   butterDark:  '#B08820',
 
   text:        '#3A5558',
   textLight:   '#8CA4A8',
-  border:      '#D8ECE9',
-  borderSoft:  '#EAF5F3',
 
-  good:        '#0A8B88',
-  goodBg:      '#E0F5F3',
-  bad:         '#E08090',
   badBg:       '#FFE4EA',
-
-  // legacy aliases
-  green:       '#0A8B88',
-  greenDark:   '#076A68',
-  greenLight:  '#E0F5F3',
-  red:         '#D56A87',
-  rowAlt:      '#F5FBFA',
+  badFg:       '#B04A5A',
 };
 
 // ─── Logo image preload ───────────────────────────────────────
@@ -409,6 +505,8 @@ const logoPromise = new Promise(res => {
 
 let currentFormat = '1:1';
 
+function $(id) { return document.getElementById(id); }
+
 function getData() {
   const vals = {};
   INDICATORS.forEach(({ key }) => {
@@ -420,26 +518,33 @@ function getData() {
     };
   });
   return {
-    treatmentName: document.getElementById('treatmentName').value.trim() || '血液淨化體內大掃除',
-    patientName:   document.getElementById('patientName').value.trim(),
+    treatmentName: $('treatmentName').value.trim() || '血液淨化體內大掃除',
+    patientName:   $('patientName').value.trim(),
+    treatDate:     $('treatDate').value.trim(),
+    labelDrop:     $('labelDrop').value.trim() || '降幅',
+    labelClear:    $('labelClear').value.trim() || '清除率',
+    onlyFilled:    $('onlyFilled').checked,
+    showTagline:   $('showTagline').checked,
     vals,
   };
 }
 
 function fmtVal(v) {
-  if (v === null) return '—';
-  return v < 10 ? v.toFixed(1) : Math.round(v).toString();
+  if (v === null || v === undefined || isNaN(v)) return '—';
+  return Math.abs(v) < 10 && !Number.isInteger(v) ? v.toFixed(1) : Math.round(v).toString();
 }
 
-function calcPct(before, after, dir) {
-  if (before === null || after === null || before === 0) return null;
-  const pct = ((after - before) / before) * 100;
-  const improved = dir === 'up' ? pct > 0 : pct < 0;
-  return { pct: Math.abs(pct), improved, arrow: pct < 0 ? '↓' : '↑' };
+// 清除率：(前 − 後) ÷ 前 × 100%；降幅：前 − 後
+function calcChange(before, after) {
+  if (before === null || after === null || isNaN(before) || isNaN(after) || before === 0) return null;
+  const drop = before - after;
+  const pct  = (drop / before) * 100;
+  return { drop, pct: Math.abs(pct), improved: drop > 0, same: drop === 0 };
 }
 
 // ─── Canvas Helpers ───────────────────────────────────────────
 function rrect(ctx, x, y, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
   ctx.beginPath();
   ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y);
   ctx.arcTo(x + w, y, x + w, y + r, r);
@@ -452,13 +557,25 @@ function rrect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
+function fitFont(ctx, text, weight, family, size, maxW, minSize) {
+  let s = size;
+  while (s > minSize) {
+    ctx.font = `${weight} ${s}px ${family}`;
+    if (ctx.measureText(text).width <= maxW) break;
+    s -= 1;
+  }
+  ctx.font = `${weight} ${s}px ${family}`;
+  return s;
+}
+
 // ─── Draw Card ───────────────────────────────────────────────
 function drawCard(canvas, fmt) {
-  const W = 1080;
-  const H = fmt === '4:5' ? 1350 : 1080;
+  const F = FORMATS[fmt] || FORMATS['1:1'];
+  const W = F.w, H = F.h;
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
   const d = getData();
+  const landscape = W > H;
 
   // Outer cream bg
   ctx.fillStyle = C.bg;
@@ -475,114 +592,127 @@ function drawCard(canvas, fmt) {
   }
 
   // Main rounded card
-  const M = 28;                      // outer margin
-  const CR = 40;                     // card radius
+  const M = 28;
+  const CR = 40;
   const CX = M, CY = M, CW = W - M*2, CH = H - M*2;
 
-  // Drop shadow
   ctx.fillStyle = C.cardShadow;
   rrect(ctx, CX + 3, CY + 8, CW, CH, CR);
   ctx.fill();
 
-  // Card surface
   ctx.fillStyle = C.white;
   rrect(ctx, CX, CY, CW, CH, CR);
   ctx.fill();
 
-  // Clip to card for all inner content
   ctx.save();
   rrect(ctx, CX, CY, CW, CH, CR);
   ctx.clip();
 
-  // ── Header block (Matcha gradient — 富足品牌綠) ──
-  const HH = 170;
+  // ── Header block (Matcha gradient) ──
+  const HH = landscape ? 150 : 170;
   const headerGrad = ctx.createLinearGradient(CX, CY, CX + CW, CY + HH);
-  headerGrad.addColorStop(0, '#A7C9A5');   // 抹茶亮色
-  headerGrad.addColorStop(1, '#5E8F6E');   // 抹茶深色
+  headerGrad.addColorStop(0, '#A7C9A5');
+  headerGrad.addColorStop(1, '#5E8F6E');
   ctx.fillStyle = headerGrad;
   ctx.fillRect(CX, CY, CW, HH);
 
-  // Decorative circles in header
   ctx.fillStyle = 'rgba(255,255,255,0.30)';
   ctx.beginPath(); ctx.arc(CX + CW - 80, CY + 40, 22, 0, Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(CX + CW - 40, CY + 90, 12, 0, Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(CX + CW - 110, CY + 100, 8, 0, Math.PI*2); ctx.fill();
 
-  // Logo on left
-  const LOGO_SZ = 96;
+  // Logo
+  const LOGO_SZ = landscape ? 88 : 96;
   const LOGO_X = CX + 40;
   const LOGO_Y = CY + (HH - LOGO_SZ) / 2;
   if (logoReady) {
-    // White rounded backdrop for logo
     ctx.fillStyle = '#FFFFFF';
     rrect(ctx, LOGO_X - 8, LOGO_Y - 8, LOGO_SZ + 16, LOGO_SZ + 16, 20);
     ctx.fill();
-    ctx.drawImage(logoImg, LOGO_X, LOGO_Y, LOGO_SZ, LOGO_SZ);
+    // 依 logo 原始比例置入方框
+    const ar = logoImg.naturalWidth / logoImg.naturalHeight || 1;
+    let lw = LOGO_SZ, lh = LOGO_SZ;
+    if (ar > 1) lh = LOGO_SZ / ar; else lw = LOGO_SZ * ar;
+    ctx.drawImage(logoImg, LOGO_X + (LOGO_SZ - lw) / 2, LOGO_Y + (LOGO_SZ - lh) / 2, lw, lh);
   }
 
-  // Title area (right of logo)
   const titleX = LOGO_X + LOGO_SZ + 28;
 
-  // Clinic name small
+  // Patient / date chip (top-right) — 先算寬度，避免和標題重疊
+  let chipW = 0;
+  const chipParts = [];
+  if (d.patientName) chipParts.push('👤 ' + d.patientName);
+  if (d.treatDate)   chipParts.push(d.treatDate);
+  const chipText = chipParts.join('  ·  ');
+  if (chipText) {
+    ctx.font = '600 20px "Noto Sans TC", sans-serif';
+    chipW = ctx.measureText(chipText).width + 40;
+    const px = CX + CW - chipW - 36;
+    const py = CY + 24;
+    ctx.fillStyle = 'rgba(255,255,255,0.88)';
+    rrect(ctx, px, py, chipW, 36, 18);
+    ctx.fill();
+    ctx.fillStyle = C.tiffDeep;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(chipText, px + chipW / 2, py + 18);
+    ctx.textAlign = 'left';
+  }
+
+  // Clinic name
   ctx.font = '600 20px "Noto Sans TC", sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.fillStyle = 'rgba(255,255,255,0.88)';
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
   ctx.fillText('♡ 富足診所 · 照顧心血管', titleX, CY + HH * 0.32);
 
   // Title
-  ctx.font = '900 52px "Noto Serif TC", serif';
+  const titleText = d.treatmentName + ' 成效記錄';
+  const titleMaxW = CW - (titleX - CX) - 40;
+  fitFont(ctx, titleText, '900', '"Noto Serif TC", serif', landscape ? 48 : 52, titleMaxW, 30);
   ctx.fillStyle = '#FFFFFF';
-  ctx.fillText(d.treatmentName + '成效記錄', titleX, CY + HH * 0.68);
+  ctx.fillText(titleText, titleX, CY + HH * 0.68);
 
-  // Patient name chip (top-right)
-  if (d.patientName) {
-    const pName = d.patientName;
-    ctx.font = '600 20px "Noto Sans TC", sans-serif';
-    const pw = ctx.measureText(pName).width + 40;
-    const px = CX + CW - pw - 36;
-    const py = CY + 24;
-    ctx.fillStyle = 'rgba(255,255,255,0.85)';
-    rrect(ctx, px, py, pw, 36, 18);
-    ctx.fill();
-    ctx.fillStyle = C.tiffDeep;
-    ctx.textAlign = 'center';
-    ctx.fillText('👤 ' + pName, px + pw / 2, py + 18);
-    ctx.textAlign = 'left';
-  }
+  // "Before / After" tag under title (小英文字)
+  ctx.font = '700 16px "Noto Sans TC", sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.75)';
+  ctx.fillText('BEFORE  ➜  AFTER', CX + CW - 36 - ctx.measureText('BEFORE  ➜  AFTER').width, CY + HH - 26);
 
-  // ── Column-header pills ──
+  // ── Table geometry（表格最寬 1300，橫式時置中）──
   const PAD = 40;
-  const COL = {
-    label:  CX + PAD,      labelEnd: CX + 400,
-    before: CX + 400,      beforeEnd: CX + 570,
-    after:  CX + 570,      afterEnd:  CX + 740,
-    badge:  CX + 740,      badgeEnd:  CX + CW - PAD + 10,
-  };
+  const TW = Math.min(CW - PAD * 2, 1300);
+  const TX = CX + (CW - TW) / 2;
+  const fr = { label: 0.30, before: 0.15, after: 0.17, drop: 0.17, clear: 0.21 };
+  const COL = {};
+  let cx = TX;
+  ['label', 'before', 'after', 'drop', 'clear'].forEach(k => {
+    COL[k] = cx; COL[k + 'End'] = cx + TW * fr[k]; cx += TW * fr[k];
+  });
 
-  const COLH = CY + HH + 30;
+  const COLH = CY + HH + (landscape ? 22 : 30);
   const COLH_H = 60;
 
-  // "指標" label left
   ctx.font = '700 22px "Noto Sans TC", sans-serif';
   ctx.fillStyle = C.textLight;
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
   ctx.fillText('✎  指標', COL.label + 8, COLH + COLH_H / 2);
 
-  // 3 pill chips
   const chipPills = [
-    { key:'before', label:'治療前',  bg:'#FFE4E4', fg:'#C94040' },
-    { key:'after',  label:'治療後',  bg:C.tiffSoft, fg:C.tiffDeep },
-    { key:'badge',  label:'改善幅度', bg:'#FFF4D2', fg:C.butterDark },
+    { key:'before', label:'治療前',     bg:'#FFE4E4',    fg:'#C94040' },
+    { key:'after',  label:'治療後',     bg:C.tiffSoft,   fg:C.tiffDeep },
+    { key:'drop',   label:d.labelDrop,  bg:C.butterSoft, fg:C.butterDark },
+    { key:'clear',  label:d.labelClear, bg:C.butterSoft, fg:C.butterDark },
   ];
-  const CHIP_W = 160, CHIP_H = 48;
+  const CHIP_H = 48;
   chipPills.forEach(c => {
+    const colW = COL[c.key + 'End'] - COL[c.key];
+    const cw = Math.min(160, colW - 10);
     const cxm = (COL[c.key] + COL[c.key + 'End']) / 2;
     ctx.fillStyle = c.bg;
-    rrect(ctx, cxm - CHIP_W/2, COLH + (COLH_H - CHIP_H)/2, CHIP_W, CHIP_H, CHIP_H/2);
+    rrect(ctx, cxm - cw/2, COLH + (COLH_H - CHIP_H)/2, cw, CHIP_H, CHIP_H/2);
     ctx.fill();
-    ctx.font = '700 22px "Noto Sans TC", sans-serif';
+    fitFont(ctx, c.label, '700', '"Noto Sans TC", sans-serif', 22, cw - 16, 14);
     ctx.fillStyle = c.fg;
     ctx.textAlign = 'center';
     ctx.fillText(c.label, cxm, COLH + COLH_H / 2);
@@ -595,29 +725,34 @@ function drawCard(canvas, fmt) {
   const contentEnd   = CY + CH - FOOTER_H;
   const SH = 56;
 
-  const totalRows = INDICATORS.length;
-  const totalSections = SECTIONS.length;
-  const availForRows = contentEnd - contentStart - totalSections * SH - 20;
-  const ROW_H = Math.max(85, Math.min(fmt === '4:5' ? 115 : 100, Math.floor(availForRows / totalRows)));
+  // 決定要畫哪些列：只顯示有數值的指標（全部空白時顯示全部）
+  const anyFilled = INDICATORS.some(i => d.vals[i.key].before !== null || d.vals[i.key].after !== null);
+  const visible = INDICATORS.filter(i => !(d.onlyFilled && anyFilled) || d.vals[i.key].before !== null || d.vals[i.key].after !== null);
+  const secList = SECTIONS.filter(s => visible.some(i => i.section === s.name));
+
+  const totalRows = visible.length;
+  const taglineReserve = d.showTagline ? (landscape ? 70 : 110) : 20;
+  const availForRows = contentEnd - contentStart - secList.length * SH - taglineReserve;
+  // 指標少時列高放大，避免下方留白過多
+  let maxRowH = landscape ? 108 : (fmt === '1:1' ? 104 : 124);
+  if (totalRows <= 4) maxRowH += landscape ? 30 : 50;
+  const ROW_H = Math.max(80, Math.min(maxRowH, Math.floor(availForRows / Math.max(1, totalRows))));
 
   let y = contentStart;
   let rowIdx = 0;
 
-  SECTIONS.forEach(sec => {
-    const items = INDICATORS.filter(i => i.section === sec.name);
+  secList.forEach(sec => {
+    const items = visible.filter(i => i.section === sec.name);
 
-    // Section header as rounded pill
-    const pillX = CX + PAD;
-    const pillW = CW - PAD * 2;
     ctx.fillStyle = sec.bg;
-    rrect(ctx, pillX, y + 4, pillW, SH - 8, (SH - 8)/2);
+    rrect(ctx, TX, y + 4, TW, SH - 8, (SH - 8)/2);
     ctx.fill();
 
     ctx.font = '800 26px "Noto Sans TC", sans-serif';
     ctx.fillStyle = sec.fg;
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'left';
-    ctx.fillText(sec.icon + '  ' + sec.name, pillX + 24, y + SH / 2);
+    ctx.fillText(sec.icon + '  ' + sec.name, TX + 24, y + SH / 2);
     y += SH;
 
     items.forEach(item => {
@@ -626,81 +761,95 @@ function drawCard(canvas, fmt) {
       const cy = ry + rh / 2;
       const v  = d.vals[item.key];
 
-      // Soft row card bg (alternating)
-      const bg = rowIdx % 2 === 0 ? C.tiffTint : C.white;
-      ctx.fillStyle = bg;
-      rrect(ctx, CX + PAD, ry, CW - PAD*2, rh, 18);
+      ctx.fillStyle = rowIdx % 2 === 0 ? C.tiffTint : C.white;
+      rrect(ctx, TX, ry, TW, rh, 18);
       ctx.fill();
 
-      // Colored left dot for indicator
       ctx.fillStyle = item.dot;
       ctx.beginPath();
-      ctx.arc(CX + PAD + 26, cy, 10, 0, Math.PI * 2);
+      ctx.arc(TX + 26, cy, 10, 0, Math.PI * 2);
       ctx.fill();
 
-      // Label
-      const lsz = Math.min(38, rh * 0.36);
-      ctx.font = `700 ${lsz}px "Noto Sans TC", sans-serif`;
+      // Label + sub
+      const labelMaxW = COL.labelEnd - (TX + 52) - 8;
+      const lsz = fitFont(ctx, item.label, '700', '"Noto Sans TC", sans-serif', Math.min(36, rh * 0.36), labelMaxW, 22);
       ctx.fillStyle = C.text;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'left';
-      ctx.fillText(item.label, CX + PAD + 52, cy - 8);
+      ctx.fillText(item.label, TX + 52, cy - 8);
 
-      ctx.font = `400 20px "Noto Sans TC", sans-serif`;
+      ctx.font = '400 19px "Noto Sans TC", sans-serif';
       ctx.fillStyle = C.textLight;
-      ctx.fillText(item.unit, CX + PAD + 52, cy + lsz * 0.65);
+      ctx.fillText(item.sub, TX + 52, cy + lsz * 0.65);
 
-      // Before (red — 提醒治療前的警訊值)
-      const bSz = Math.min(54, rh * 0.46);
+      // Before（紅：警訊值）
+      const bSz = Math.min(52, rh * 0.46);
       ctx.font = `700 ${bSz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = v.before !== null ? '#E85959' : '#E8C8C8';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(fmtVal(v.before), (COL.before + COL.beforeEnd) / 2, cy);
 
-      // After (Tiffany highlight)
-      const aSz = Math.min(64, rh * 0.54);
+      // After（品牌深綠）
+      const aSz = Math.min(62, rh * 0.54);
       ctx.font = `800 ${aSz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = v.after !== null ? C.tiffDeep : '#D8E4E3';
       ctx.fillText(fmtVal(v.after), (COL.after + COL.afterEnd) / 2, cy);
 
-      // Badge pill — arrow 加大 + % 加大，強化視覺重點
-      const ch = calcPct(v.before, v.after, item.dir);
-      const bcx = (COL.badge + COL.badgeEnd) / 2;
+      const ch = calcChange(v.before, v.after);
+
+      // Drop（絕對降幅：−91）
+      const dcx = (COL.drop + COL.dropEnd) / 2;
       if (ch) {
-        const BW = 230, BH = Math.min(76, rh * 0.64);
-        ctx.fillStyle = ch.improved ? C.tiffSoft : C.badBg;
+        const dSz = Math.min(46, rh * 0.42);
+        const txt = ch.same ? '0' : (ch.improved ? '−' : '+') + fmtVal(Math.abs(ch.drop));
+        ctx.font = `800 ${dSz}px "Noto Sans TC", sans-serif`;
+        ctx.fillStyle = ch.improved ? C.tiffDeep : (ch.same ? C.textLight : C.badFg);
+        ctx.textAlign = 'center';
+        ctx.fillText(txt, dcx, cy - 6);
+        ctx.font = '500 16px "Noto Sans TC", sans-serif';
+        ctx.fillStyle = C.textLight;
+        ctx.fillText(item.unit, dcx, cy + dSz * 0.55);
+      } else {
+        ctx.font = '400 34px "Noto Sans TC", sans-serif';
+        ctx.fillStyle = '#CBDBD8';
+        ctx.textAlign = 'center';
+        ctx.fillText('—', dcx, cy);
+      }
+
+      // Clear（百分比 badge，箭頭放大）
+      const bcx = (COL.clear + COL.clearEnd) / 2;
+      const colW = COL.clearEnd - COL.clear;
+      if (ch) {
+        const BW = Math.min(230, colW - 8), BH = Math.min(76, rh * 0.64);
+        ctx.fillStyle = ch.improved ? C.tiffSoft : (ch.same ? '#EEF2EF' : C.badBg);
         rrect(ctx, bcx - BW / 2, cy - BH / 2, BW, BH, BH / 2);
         ctx.fill();
 
         const pctSz   = Math.min(40, BH * 0.58);
-        const arrowSz = pctSz * 1.35;               // 箭頭比 % 再大一點
-        const fg = ch.improved ? C.tiffDeep : '#B04A5A';
-        const arrow = ch.improved ? '↓' : '↑';
+        const arrowSz = pctSz * 1.35;
+        const fg = ch.improved ? C.tiffDeep : (ch.same ? C.textLight : C.badFg);
+        const arrow = ch.same ? '' : (ch.improved ? '↓' : '↑');
         const num   = `${ch.pct.toFixed(1)}%`;
 
-        // 量測寬度以置中
         ctx.font = `900 ${arrowSz}px "Noto Sans TC", sans-serif`;
-        const arrowW = ctx.measureText(arrow).width;
+        const arrowW = arrow ? ctx.measureText(arrow).width : 0;
         ctx.font = `800 ${pctSz}px "Noto Sans TC", sans-serif`;
         const numW = ctx.measureText(num).width;
-        const gap = 8;
+        const gap = arrow ? 8 : 0;
         const totalW = arrowW + gap + numW;
 
         ctx.fillStyle = fg;
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'left';
         let x = bcx - totalW / 2;
-
-        // 箭頭（加粗、加大）
-        ctx.font = `900 ${arrowSz}px "Noto Sans TC", sans-serif`;
-        ctx.fillText(arrow, x, cy + 1);
-        x += arrowW + gap;
-
-        // 百分比
+        if (arrow) {
+          ctx.font = `900 ${arrowSz}px "Noto Sans TC", sans-serif`;
+          ctx.fillText(arrow, x, cy + 1);
+          x += arrowW + gap;
+        }
         ctx.font = `800 ${pctSz}px "Noto Sans TC", sans-serif`;
         ctx.fillText(num, x, cy + 1);
-
         ctx.textAlign = 'center';
       } else {
         ctx.font = '400 34px "Noto Sans TC", sans-serif';
@@ -717,17 +866,11 @@ function drawCard(canvas, fmt) {
   });
 
   // ── Tagline block in remaining gap ──
-  if (y < contentEnd) {
+  if (d.showTagline && y < contentEnd) {
     const gapTop = y + 6;
     const gapH   = contentEnd - y - 6;
     if (gapH > 36) {
-      // Decorative stars
-      ctx.font = '28px sans-serif';
-      ctx.fillStyle = C.tiff;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-
-      const mainSz = gapH > 160 ? (fmt === '4:5' ? 42 : 36)
+      const mainSz = gapH > 160 ? (landscape ? 36 : 42)
                     : gapH > 110 ? 32
                     : gapH > 70  ? 26
                     : 20;
@@ -739,15 +882,20 @@ function drawCard(canvas, fmt) {
       const cxm = CX + CW / 2;
       const cym = gapTop + gapH / 2;
 
-      // Little sparkles around
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const tagline = '把你的心血管，交給專心的醫師。';
+      ctx.font = `700 ${mainSz}px "Noto Serif TC", serif`;
+      const tagHalf = ctx.measureText(tagline).width / 2 + mainSz * 0.9;
+
       ctx.fillStyle = C.tiff;
       ctx.font = `500 ${mainSz * 0.55}px sans-serif`;
-      ctx.fillText('✦', cxm - 250, cym - mainSz * 0.3);
-      ctx.fillText('✦', cxm + 250, cym - mainSz * 0.3);
+      ctx.fillText('✦', cxm - tagHalf, cym - mainSz * 0.3);
+      ctx.fillText('✦', cxm + tagHalf, cym - mainSz * 0.3);
 
       ctx.font = `700 ${mainSz}px "Noto Serif TC", serif`;
       ctx.fillStyle = C.tiffDeep;
-      ctx.fillText('把你的心血管，交給專心的醫師。', cxm, cym - mainSz * 0.55);
+      ctx.fillText(tagline, cxm, cym - mainSz * 0.55);
 
       ctx.font = `500 ${attrSz}px "Noto Sans TC", sans-serif`;
       ctx.fillStyle = C.tiffDark;
@@ -757,12 +905,11 @@ function drawCard(canvas, fmt) {
     }
   }
 
-  // ── Footer (soft matcha bar, rounded bottom) ──
+  // ── Footer ──
   const fy = CY + CH - FOOTER_H;
   ctx.fillStyle = C.tiffSoft;
   ctx.fillRect(CX, fy, CW, FOOTER_H);
 
-  // Dashed decorative top border
   ctx.strokeStyle = C.tiff;
   ctx.lineWidth = 2;
   ctx.setLineDash([6, 8]);
@@ -778,23 +925,28 @@ function drawCard(canvas, fmt) {
   ctx.fillStyle = C.tiffDeep;
   ctx.fillText('♡ 認同的話，幫我分享給更多人', CX + 36, fy + FOOTER_H / 2);
 
+  ctx.textAlign = 'center';
+  ctx.fillStyle = C.textLight;
+  ctx.font = '400 14px "Noto Sans TC", sans-serif';
+  ctx.fillText(`${d.labelClear}＝(治療前−治療後)÷治療前　·　個案成效因人而異`, CX + CW / 2, fy + FOOTER_H / 2);
+
   ctx.textAlign = 'right';
   ctx.fillStyle = C.tiffDark;
   ctx.font = '700 17px "Noto Sans TC", sans-serif';
-  ctx.fillText('@俠醫楊智鈞', CX + CW - 36, fy + FOOTER_H / 2);
+  ctx.fillText('富足診所 · @俠醫楊智鈞', CX + CW - 36, fy + FOOTER_H / 2);
   ctx.textAlign = 'left';
 
   ctx.restore();
 }
 
 // ─── Preview & Download ───────────────────────────────────────
-const canvas = document.getElementById('previewCanvas');
-const SCALE = 0.44;
+const canvas = $('previewCanvas');
 
 function setFormat(f) {
   currentFormat = f;
-  document.getElementById('btn11').classList.toggle('active', f === '1:1');
-  document.getElementById('btn45').classList.toggle('active', f === '4:5');
+  document.querySelectorAll('.fmt-btn').forEach(b => b.classList.toggle('active', b.dataset.fmt === f));
+  const F = FORMATS[f];
+  $('previewHint').textContent = `輸出解析度 ${F.w} × ${F.h} px — 適用 ${F.hint}`;
   redraw();
 }
 
@@ -802,21 +954,14 @@ async function redraw() {
   await document.fonts.ready;
   await logoPromise;
   drawCard(canvas, currentFormat);
-  // Responsive scaling: mobile fits width; desktop uses fixed SCALE
+  const panel = document.querySelector('.preview-panel');
   const isMobile = window.matchMedia('(max-width: 900px)').matches;
-  if (isMobile) {
-    const panel = document.querySelector('.preview-panel');
-    const availW = panel.clientWidth - 24;
-    const ratio = canvas.height / canvas.width;
-    canvas.style.width  = availW + 'px';
-    canvas.style.height = (availW * ratio) + 'px';
-  } else {
-    canvas.style.width  = (canvas.width  * SCALE) + 'px';
-    canvas.style.height = (canvas.height * SCALE) + 'px';
-  }
+  const availW = panel.clientWidth - (isMobile ? 24 : 64);
+  const scale = Math.min(isMobile ? 1 : 0.5, availW / canvas.width);
+  canvas.style.width  = (canvas.width  * scale) + 'px';
+  canvas.style.height = (canvas.height * scale) + 'px';
 }
 
-// Re-layout on resize / orientation change
 window.addEventListener('resize', () => { redraw(); });
 
 async function downloadCard() {
@@ -824,7 +969,7 @@ async function downloadCard() {
   await logoPromise;
   const exp = document.createElement('canvas');
   drawCard(exp, currentFormat);
-  const name  = document.getElementById('patientName').value.trim();
+  const name  = $('patientName').value.trim();
   const fname = `血液淨化成效_${currentFormat.replace(':', 'x')}${name ? '_' + name : ''}.png`;
   exp.toBlob(blob => {
     const url = URL.createObjectURL(blob);
@@ -835,12 +980,267 @@ async function downloadCard() {
 }
 
 let t;
-document.querySelectorAll('input').forEach(el =>
-  el.addEventListener('input', () => { clearTimeout(t); t = setTimeout(redraw, 100); })
-);
+document.querySelectorAll('input, select').forEach(el => {
+  const h = () => { clearTimeout(t); t = setTimeout(redraw, 100); };
+  el.addEventListener('input', h);
+  el.addEventListener('change', h);
+});
 
+// ═══════════════════════════════════════════════════════════════
+//  從登記表帶入：貼上 / CSV / Google 試算表
+// ═══════════════════════════════════════════════════════════════
 
-document.fonts.ready.then(redraw);
+// 「血液淨化資料登記」固定欄位順序（無標題列時使用）
+const REGISTRY_DEFAULT_HEADER = [
+  '病歷號','姓名','年齡','性別','慢性病','體重','血淨日期','Hct (%)',
+  'TG 前','TCHOL 前','LDL 前','HDL 前','TG 後','TCHOL 後','LDL 後','HDL 後',
+  'TG 廢','TC 廢','LDL 廢','療程時間','預沖量','處理血量','體液變化量','血液回輸量',
+  '處理血漿量','血漿回輸量','沖洗次數','補充液量','注射量','PV','淨化深度','副作用',
+  'TG 降幅','TCHOL 降幅','LDL 降幅','HDL 降幅','備註',
+];
+
+let importedRows = [];   // [{ id, name, date, vals:{tg:{before,after},...}, raw }]
+
+function showImportTab(tab) {
+  document.querySelectorAll('.import-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.import-pane').forEach(p => p.classList.toggle('active', p.id === 'pane-' + tab));
+}
+
+function setStatus(msg, ok) {
+  const el = $('importStatus');
+  el.textContent = msg;
+  el.className = 'import-status ' + (ok ? 'ok' : 'err');
+}
+
+// 解析 CSV / TSV（支援引號）
+function parseDelimited(text) {
+  text = text.replace(/^﻿/, '');
+  const firstLine = text.split(/\r?\n/)[0] || '';
+  const delim = firstLine.includes('\t') ? '\t' : ',';
+  const rows = [];
+  let row = [], field = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQ) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else inQ = false;
+      } else field += c;
+    } else if (c === '"') {
+      inQ = true;
+    } else if (c === delim) {
+      row.push(field); field = '';
+    } else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(field); field = '';
+      if (row.some(f => f.trim() !== '')) rows.push(row);
+      row = [];
+    } else field += c;
+  }
+  row.push(field);
+  if (row.some(f => f.trim() !== '')) rows.push(row);
+  return rows;
+}
+
+// 欄位辨識：回傳 { role, key, phase }
+function classifyHeader(h) {
+  const s = String(h || '').trim().toLowerCase().replace(/\s+/g, '');
+  if (!s) return null;
+  if (/病歷|病例|chart|mrn|^id$|編號/.test(s)) return { role: 'id' };
+  if (/姓名|name/.test(s)) return { role: 'name' };
+  if (/日期|date/.test(s)) return { role: 'date' };
+  if (/hct|hdl|廢|降幅|清除|率|%/.test(s)) return null;
+
+  let key = null;
+  if (/ldl|低密度/.test(s)) key = 'ldl';
+  else if (/^tg|三酸|triglyc/.test(s) || /tg[前後]/.test(s)) key = 'tg';
+  else if (/tchol|chol|總膽|膽固醇|^tc/.test(s)) key = 'tc';
+  else if (/ast|got/.test(s)) key = 'ast';
+  else if (/alt|gpt/.test(s)) key = 'alt';
+  else if (/ggt|γ|gamma|r-gt|rgt|gt$/.test(s)) key = 'ggt';
+  if (!key) return null;
+
+  let phase = null;
+  if (/前|pre|before/.test(s)) phase = 'before';
+  else if (/後|后|post|after/.test(s)) phase = 'after';
+  if (!phase) return null;
+  return { role: 'val', key, phase };
+}
+
+function headerLooksValid(row) {
+  let hits = 0;
+  row.forEach(h => { const c = classifyHeader(h); if (c && (c.role === 'val' || c.role === 'name' || c.role === 'id')) hits++; });
+  return hits >= 3;
+}
+
+function toNumber(s) {
+  if (s === null || s === undefined) return null;
+  const m = String(s).replace(/,/g, '').match(/-?\d+(\.\d+)?/);
+  return m ? parseFloat(m[0]) : null;
+}
+
+// 日期正規化：民國 1140124 → 2025/01/24；其餘照原樣
+function normDate(s) {
+  s = String(s || '').trim();
+  const roc = s.match(/^(\d{3})(\d{2})(\d{2})$/);
+  if (roc) return `${parseInt(roc[1], 10) + 1911}/${roc[2]}/${roc[3]}`;
+  const roc2 = s.match(/^(\d{2,3})[\/\.\-](\d{1,2})[\/\.\-](\d{1,2})$/);
+  if (roc2 && parseInt(roc2[1], 10) < 200) return `${parseInt(roc2[1], 10) + 1911}/${roc2[2]}/${roc2[3]}`;
+  return s;
+}
+
+function maskName(n) {
+  n = String(n || '').trim();
+  if (n.length <= 1) return n;
+  if (n.length === 2) return n[0] + '○';
+  return n[0] + '○'.repeat(n.length - 2) + n[n.length - 1];
+}
+
+function buildRows(table) {
+  if (!table.length) return [];
+  let header, body;
+  if (headerLooksValid(table[0])) { header = table[0]; body = table.slice(1); }
+  else { header = REGISTRY_DEFAULT_HEADER; body = table; }
+
+  const map = header.map(classifyHeader);
+  const rows = [];
+  body.forEach(r => {
+    const rec = { id: '', name: '', date: '', vals: {} };
+    let hasVal = false;
+    map.forEach((c, i) => {
+      if (!c) return;
+      const cell = r[i];
+      if (c.role === 'id')   rec.id = String(cell || '').trim();
+      else if (c.role === 'name') rec.name = String(cell || '').trim();
+      else if (c.role === 'date') rec.date = normDate(cell);
+      else if (c.role === 'val') {
+        const n = toNumber(cell);
+        if (n !== null) {
+          rec.vals[c.key] = rec.vals[c.key] || {};
+          rec.vals[c.key][c.phase] = n;
+          hasVal = true;
+        }
+      }
+    });
+    if (hasVal || rec.name) rows.push(rec);
+  });
+  return rows;
+}
+
+function ingestText(text, sourceLabel) {
+  const table = parseDelimited(text);
+  const rows = buildRows(table);
+  if (!rows.length) {
+    setStatus('讀不到可用的資料列。請確認有包含 TG / TCHOL / LDL 前後數值欄位。', false);
+    $('patientPicker').classList.remove('show');
+    return;
+  }
+  importedRows = rows;
+  setStatus(`已從${sourceLabel}讀入 ${rows.length} 筆患者資料，請在下方選擇。`, true);
+  renderPatientOptions();
+  $('patientPicker').classList.add('show');
+  // 只有一筆就直接帶入
+  if (rows.length === 1) { $('patientSelect').value = '0'; applyPatient(0); }
+}
+
+function renderPatientOptions() {
+  const q = $('patientFilter').value.trim().toLowerCase();
+  const sel = $('patientSelect');
+  sel.innerHTML = '<option value="">— 請選擇 —</option>';
+  importedRows.forEach((r, i) => {
+    const label = [r.id, r.name, r.date].filter(Boolean).join('　');
+    if (q && !label.toLowerCase().includes(q)) return;
+    const o = document.createElement('option');
+    o.value = String(i);
+    o.textContent = label || `第 ${i + 1} 筆`;
+    sel.appendChild(o);
+  });
+}
+
+function applyPatient(idx) {
+  const r = importedRows[idx];
+  if (!r) return;
+  INDICATORS.forEach(({ key }) => {
+    const b = document.querySelector(`input[data-key="${key}"][data-field="before"]`);
+    const a = document.querySelector(`input[data-key="${key}"][data-field="after"]`);
+    const v = r.vals[key] || {};
+    b.value = v.before !== undefined ? v.before : '';
+    a.value = v.after  !== undefined ? v.after  : '';
+  });
+  $('patientName').value = $('maskName').checked ? maskName(r.name) : r.name;
+  $('treatDate').value = r.date || '';
+  redraw();
+}
+
+$('pasteArea').addEventListener('input', e => {
+  const txt = e.target.value;
+  if (txt.trim().length < 5) return;
+  ingestText(txt, '貼上內容');
+});
+
+$('csvFile').addEventListener('change', e => {
+  const f = e.target.files && e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => ingestText(String(reader.result), `檔案「${f.name}」`);
+  reader.onerror = () => setStatus('檔案讀取失敗。', false);
+  reader.readAsText(f, 'utf-8');
+});
+
+$('patientFilter').addEventListener('input', renderPatientOptions);
+$('patientSelect').addEventListener('change', e => { if (e.target.value !== '') applyPatient(parseInt(e.target.value, 10)); });
+$('maskName').addEventListener('change', () => {
+  const v = $('patientSelect').value;
+  if (v !== '') applyPatient(parseInt(v, 10));
+});
+
+// ── Google 試算表：轉成 CSV 匯出網址後抓取（需「知道連結者可檢視」）──
+function sheetCsvUrls(url) {
+  url = url.trim();
+  if (!url) return [];
+  if (/output=csv|format=csv|\.csv(\?|$)/i.test(url)) return [url];
+  const idm = url.match(/\/spreadsheets\/d\/(?:e\/)?([a-zA-Z0-9-_]+)/);
+  if (!idm) return [];
+  const id = idm[1];
+  const gidm = url.match(/[#&?]gid=(\d+)/);
+  const gid = gidm ? gidm[1] : null;
+  const gviz = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv${gid ? '&gid=' + gid : ''}`;
+  const exp  = `https://docs.google.com/spreadsheets/d/${id}/export?format=csv${gid ? '&gid=' + gid : ''}`;
+  return [gviz, exp];
+}
+
+async function loadFromSheet() {
+  const url = $('sheetUrl').value.trim();
+  const urls = sheetCsvUrls(url);
+  if (!urls.length) { setStatus('看不懂這個網址，請貼上 Google 試算表的完整網址。', false); return; }
+  try { localStorage.setItem('bp_sheet_url', url); } catch (e) {}
+
+  const btn = $('sheetLoadBtn');
+  btn.disabled = true; btn.textContent = '讀取中…';
+  let lastErr = null;
+  for (const u of urls) {
+    try {
+      const res = await fetch(u, { credentials: 'omit' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const text = await res.text();
+      if (/<html/i.test(text.slice(0, 200))) throw new Error('回傳的是網頁而不是資料（可能未開放檢視權限）');
+      ingestText(text, 'Google 試算表');
+      btn.disabled = false; btn.textContent = '載入';
+      return;
+    } catch (e) { lastErr = e; }
+  }
+  btn.disabled = false; btn.textContent = '載入';
+  setStatus('無法讀取試算表：' + (lastErr ? lastErr.message : '未知錯誤') +
+            '。請確認已設為「知道連結的使用者：檢視者」，或改用「貼上表格」。', false);
+}
+
+try {
+  const saved = localStorage.getItem('bp_sheet_url');
+  if (saved) $('sheetUrl').value = saved;
+} catch (e) {}
+
+// 初始化
+setFormat('1:1');
 </script>
 </body>
 </html>
